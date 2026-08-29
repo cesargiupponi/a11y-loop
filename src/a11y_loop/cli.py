@@ -39,6 +39,12 @@ def main(argv: list[str] | None = None) -> int:
 
     p_eval = sub.add_parser("eval", help="Run baseline + agent on the corpus, score against ground truth.")
     p_eval.add_argument("--only", choices=["baseline", "agent"], default=None, help="Run a single arm.")
+    p_eval.add_argument(
+        "--baseline-mode",
+        choices=["source_only", "curated"],
+        default="source_only",
+        help="source_only models the status quo; curated also hands over captured runtime evidence.",
+    )
 
     sub.add_parser("report", help="Render comparison tables + changelog from eval results.")
 
@@ -63,7 +69,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "eval":
         from a11y_loop.evaluate import run_eval
 
-        return run_eval(only=args.only)
+        return run_eval(only=args.only, baseline_mode=args.baseline_mode)
     if args.command == "report":
         from a11y_loop.report import run_report
 
