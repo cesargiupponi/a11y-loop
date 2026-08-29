@@ -7,14 +7,12 @@ struct StatsView: View {
                 Text("Spending by category")
                     .font(.title2.bold())
                     .accessibilityIdentifier("stats.header.categories")
-                    .accessibilityAddTraits(.isHeader)
 
                 CategoryBarChart(totals: SampleData.totalsByCategory)
 
                 Text("Largest expenses")
                     .font(.title2.bold())
                     .accessibilityIdentifier("stats.header.largest")
-                    .accessibilityAddTraits(.isHeader)
 
                 ForEach(SampleData.expenses.sorted { $0.amount > $1.amount }.prefix(3)) { expense in
                     HStack {
@@ -25,7 +23,6 @@ struct StatsView: View {
                     }
                     .padding(.vertical, 4)
                     .accessibilityIdentifier("stats.largest.row")
-                    .accessibilityElement(children: .combine)
                 }
             }
             .padding()
@@ -59,9 +56,7 @@ struct CategoryBarChart: View {
                         .font(.caption.monospacedDigit())
                 }
                 .accessibilityIdentifier("stats.bar")
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(category.rawValue)
-                .accessibilityValue(Text(total, format: .currency(code: "USD")))
+                .accessibilityElement(children: .combine)
             }
         }
         .accessibilityIdentifier("stats.chart")

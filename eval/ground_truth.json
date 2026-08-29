@@ -1,0 +1,355 @@
+{
+  "app": "Ledgerly",
+  "clean_source": "corpus/Ledgerly",
+  "seeded_source": "corpus/LedgerlySeeded",
+  "totals": {
+    "cases": 20,
+    "mechanical": 18,
+    "report_only": 2,
+    "screens": 5
+  },
+  "scoring": {
+    "primary_metric": "verified_fix_rate",
+    "definition": "share of mechanical seeded violations that are detected, patched, and pass their check after patching",
+    "report_only_note": "report-only cases score detection only; the correct remedy is a design decision left to a human reviewer",
+    "pre_existing_note": "issues present in the clean capture are pre-existing, not seeded: they are reported separately and never counted as false positives"
+  },
+  "cases": [
+    {
+      "id": "S01",
+      "screen": "expenseList",
+      "file": "Ledgerly/ExpenseListView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "expenses.add",
+      "description": "Icon-only 'plus' toolbar button loses its accessibility label, so VoiceOver announces only 'button'.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "expenses.add"
+      },
+      "exists_in_clean": true,
+      "clean_line": 28,
+      "seeded_line": 28
+    },
+    {
+      "id": "S02",
+      "screen": "expenseList",
+      "file": "Ledgerly/ExpenseListView.swift",
+      "violation_class": "decorative_exposed",
+      "fixable": true,
+      "anchor": "row.icon",
+      "description": "Decorative category glyph is exposed to VoiceOver, adding a meaningless stop before every row.",
+      "check": {
+        "type": "modifier_present",
+        "anchor": "row.icon",
+        "modifier": "accessibilityHidden"
+      },
+      "exists_in_clean": true,
+      "clean_line": 46,
+      "seeded_line": 46
+    },
+    {
+      "id": "S03",
+      "screen": "expenseList",
+      "file": "Ledgerly/ExpenseListView.swift",
+      "violation_class": "fragmented_element",
+      "fixable": true,
+      "anchor": "row.container",
+      "description": "Expense row stops combining its children, so each row is read as three disconnected fragments.",
+      "check": {
+        "type": "modifier_present",
+        "anchor": "row.container",
+        "modifier": "accessibilityElement"
+      },
+      "exists_in_clean": true,
+      "clean_line": 57,
+      "seeded_line": 57
+    },
+    {
+      "id": "S04",
+      "screen": "expenseDetail",
+      "file": "Ledgerly/ExpenseDetailView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "detail.delete",
+      "description": "Destructive delete action becomes an unlabeled trash glyph \u2014 the highest-risk unlabeled control in the app.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "detail.delete"
+      },
+      "exists_in_clean": true,
+      "clean_line": 24,
+      "seeded_line": 24
+    },
+    {
+      "id": "S05",
+      "screen": "expenseDetail",
+      "file": "Ledgerly/ExpenseDetailView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "detail.flag",
+      "description": "Review toggle loses its visible title, leaving a switch with no announced purpose.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "detail.flag"
+      },
+      "exists_in_clean": true,
+      "clean_line": 19,
+      "seeded_line": 19
+    },
+    {
+      "id": "S06",
+      "screen": "expenseDetail",
+      "file": "Ledgerly/ExpenseDetailView.swift",
+      "violation_class": "hit_region",
+      "fixable": true,
+      "anchor": "detail.duplicate",
+      "description": "Duplicate-expense button is rendered at 24pt, below the 44pt minimum touch target.",
+      "check": {
+        "type": "min_touch_target",
+        "anchor": "detail.duplicate",
+        "minimum": 44
+      },
+      "exists_in_clean": false,
+      "clean_line": 18,
+      "seeded_line": 18
+    },
+    {
+      "id": "S07",
+      "screen": "addExpense",
+      "file": "Ledgerly/AddExpenseView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "add.cancel",
+      "description": "Cancel becomes an unlabeled 'xmark' glyph in the navigation bar.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "add.cancel"
+      },
+      "exists_in_clean": true,
+      "clean_line": 32,
+      "seeded_line": 32
+    },
+    {
+      "id": "S08",
+      "screen": "addExpense",
+      "file": "Ledgerly/AddExpenseView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "add.save",
+      "description": "Save becomes an unlabeled 'checkmark' glyph \u2014 the primary action of the screen is unannounced.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "add.save"
+      },
+      "exists_in_clean": true,
+      "clean_line": 36,
+      "seeded_line": 36
+    },
+    {
+      "id": "S09",
+      "screen": "addExpense",
+      "file": "Ledgerly/AddExpenseView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "add.title",
+      "description": "Title field loses its placeholder, so the text field has no accessible name.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "add.title"
+      },
+      "exists_in_clean": true,
+      "clean_line": 13,
+      "seeded_line": 13
+    },
+    {
+      "id": "S10",
+      "screen": "addExpense",
+      "file": "Ledgerly/AddExpenseView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "add.amount",
+      "description": "Amount field loses its placeholder \u2014 an unnamed numeric field in a money form.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "add.amount"
+      },
+      "exists_in_clean": true,
+      "clean_line": 15,
+      "seeded_line": 15
+    },
+    {
+      "id": "R01",
+      "screen": "addExpense",
+      "file": "Ledgerly/AddExpenseView.swift",
+      "violation_class": "dynamic_type",
+      "fixable": false,
+      "anchor": "add.date",
+      "description": "Date row pinned to a fixed 13pt system font, so it ignores Dynamic Type.",
+      "check": {
+        "type": "report_only"
+      },
+      "exists_in_clean": true,
+      "clean_line": 24,
+      "seeded_line": 24
+    },
+    {
+      "id": "S11",
+      "screen": "stats",
+      "file": "Ledgerly/StatsView.swift",
+      "violation_class": "missing_trait",
+      "fixable": true,
+      "anchor": "stats.header.categories",
+      "description": "Section title loses its header trait, breaking VoiceOver heading navigation.",
+      "check": {
+        "type": "modifier_present",
+        "anchor": "stats.header.categories",
+        "modifier": "accessibilityAddTraits"
+      },
+      "exists_in_clean": true,
+      "clean_line": 9,
+      "seeded_line": 9
+    },
+    {
+      "id": "S12",
+      "screen": "stats",
+      "file": "Ledgerly/StatsView.swift",
+      "violation_class": "missing_trait",
+      "fixable": true,
+      "anchor": "stats.header.largest",
+      "description": "Second section title loses its header trait.",
+      "check": {
+        "type": "modifier_present",
+        "anchor": "stats.header.largest",
+        "modifier": "accessibilityAddTraits"
+      },
+      "exists_in_clean": true,
+      "clean_line": 15,
+      "seeded_line": 15
+    },
+    {
+      "id": "S13",
+      "screen": "stats",
+      "file": "Ledgerly/StatsView.swift",
+      "violation_class": "fragmented_element",
+      "fixable": true,
+      "anchor": "stats.largest.row",
+      "description": "Largest-expense rows stop combining, splitting each entry from its amount.",
+      "check": {
+        "type": "modifier_present",
+        "anchor": "stats.largest.row",
+        "modifier": "accessibilityElement"
+      },
+      "exists_in_clean": true,
+      "clean_line": 25,
+      "seeded_line": 25
+    },
+    {
+      "id": "S14",
+      "screen": "stats",
+      "file": "Ledgerly/StatsView.swift",
+      "violation_class": "semantic_value_loss",
+      "fixable": true,
+      "anchor": "stats.bar",
+      "description": "HARD CASE: chart bars collapse into a merged element. Children are combined instead of ignored, so each bar announces concatenated text ('Health, $18.75') with no accessibility value \u2014 the measurement is lost even though the bar plausibly 'has a label'.",
+      "check": {
+        "type": "all",
+        "checks": [
+          {
+            "type": "modifier_present",
+            "anchor": "stats.bar",
+            "modifier": "accessibilityLabel"
+          },
+          {
+            "type": "modifier_present",
+            "anchor": "stats.bar",
+            "modifier": "accessibilityValue"
+          }
+        ]
+      },
+      "exists_in_clean": true,
+      "clean_line": 58,
+      "seeded_line": 58
+    },
+    {
+      "id": "S15",
+      "screen": "settings",
+      "file": "Ledgerly/SettingsView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "settings.notifications",
+      "description": "Notifications toggle loses its title, leaving an unnamed switch.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "settings.notifications"
+      },
+      "exists_in_clean": true,
+      "clean_line": 15,
+      "seeded_line": 15
+    },
+    {
+      "id": "S16",
+      "screen": "settings",
+      "file": "Ledgerly/SettingsView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "settings.roundup",
+      "description": "Round-up toggle loses its title.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "settings.roundup"
+      },
+      "exists_in_clean": true,
+      "clean_line": 17,
+      "seeded_line": 17
+    },
+    {
+      "id": "S17",
+      "screen": "settings",
+      "file": "Ledgerly/SettingsView.swift",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "anchor": "settings.privacy",
+      "description": "Privacy policy link becomes an unlabeled glyph, so the only legal link in the app is unreachable by name.",
+      "check": {
+        "type": "accessible_name",
+        "anchor": "settings.privacy"
+      },
+      "exists_in_clean": true,
+      "clean_line": 25,
+      "seeded_line": 25
+    },
+    {
+      "id": "S18",
+      "screen": "settings",
+      "file": "Ledgerly/SettingsView.swift",
+      "violation_class": "fragmented_element",
+      "fixable": true,
+      "anchor": "settings.version",
+      "description": "Version row stops combining its children, so 'Version' and '1.0.0' are announced as two separate elements.",
+      "check": {
+        "type": "modifier_present",
+        "anchor": "settings.version",
+        "modifier": "accessibilityElement"
+      },
+      "exists_in_clean": true,
+      "clean_line": 22,
+      "seeded_line": 22
+    },
+    {
+      "id": "R02",
+      "screen": "settings",
+      "file": "Ledgerly/SettingsView.swift",
+      "violation_class": "contrast",
+      "fixable": false,
+      "anchor": "settings.currency",
+      "description": "Currency picker is tinted light gray on white, below the 4.5:1 contrast minimum.",
+      "check": {
+        "type": "report_only"
+      },
+      "exists_in_clean": true,
+      "clean_line": 14,
+      "seeded_line": 14
+    }
+  ]
+}

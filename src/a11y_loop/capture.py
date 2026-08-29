@@ -28,6 +28,15 @@ def _run(cmd: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess
     return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
 
 
+def _scheme_name(app_dir: Path) -> str:
+    """Scheme comes from project.yml, so a seeded copy in a differently named
+    directory still builds the same scheme as the clean app."""
+    for line in (app_dir / "project.yml").read_text().splitlines():
+        if line.startswith("name:"):
+            return line.split(":", 1)[1].strip()
+    raise RuntimeError(f"no project name in {app_dir}/project.yml")
+
+
 def _latest_xcresult(app_dir: Path) -> Path:
     results = sorted(
         (app_dir / "DerivedData" / "Logs" / "Test").glob("*.xcresult"),
@@ -82,7 +91,11 @@ def run_capture(app: str, variant: str = "seeded") -> int:
         return 2
 
     app_dir = corpus_dir(app)
-    project = app_dir / f"{app}.xcodeproj"
+    if not app_dir.exists():
+        print(f"capture: no corpus app at {app_dir}", file=sys.stderr)
+        return 1
+    scheme = _scheme_name(app_dir)
+    project = app_dir / f"{scheme}.xcodeproj"
     if not project.exists():
         gen = _run(["xcodegen", "generate"], cwd=app_dir)
         if gen.returncode != 0:
@@ -94,7 +107,7 @@ def run_capture(app: str, variant: str = "seeded") -> int:
         [
             "xcodebuild", "test",
             "-project", str(project),
-            "-scheme", app,
+            "-scheme", scheme,
             "-destination", f"platform=iOS Simulator,name={SIMULATOR}",
             "-derivedDataPath", str(app_dir / "DerivedData"),
         ],

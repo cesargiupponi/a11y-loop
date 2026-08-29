@@ -25,7 +25,6 @@ struct ExpenseListView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-                .accessibilityLabel("Add expense")
                 .accessibilityIdentifier("expenses.add")
             }
         }
@@ -45,7 +44,6 @@ struct ExpenseRow: View {
                 .foregroundStyle(.tint)
                 .frame(width: 28)
                 .accessibilityIdentifier("row.icon")
-                .accessibilityHidden(true)
             VStack(alignment: .leading) {
                 Text(expense.title)
                 Text(expense.category.rawValue)
@@ -57,6 +55,5 @@ struct ExpenseRow: View {
                 .monospacedDigit()
         }
         .accessibilityIdentifier("row.container")
-        .accessibilityElement(children: .combine)
     }
 }

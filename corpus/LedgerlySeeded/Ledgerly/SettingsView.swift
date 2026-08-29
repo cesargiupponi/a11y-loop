@@ -11,18 +11,18 @@ struct SettingsView: View {
                 Picker("Currency", selection: $currency) {
                     ForEach(["USD", "EUR", "BRL"], id: \.self) { Text($0) }
                 }
+                .foregroundStyle(Color(white: 0.72))
                 .accessibilityIdentifier("settings.currency")
-                Toggle("Monthly summary notifications", isOn: $notifications)
+                Toggle("", isOn: $notifications)
                     .accessibilityIdentifier("settings.notifications")
-                Toggle("Round up amounts", isOn: $roundUp)
+                Toggle("", isOn: $roundUp)
                     .accessibilityIdentifier("settings.roundup")
             }
             Section("About") {
                 HStack { Text("Version"); Spacer(); Text("1.0.0") }
                     .accessibilityIdentifier("settings.version")
-                    .accessibilityElement(children: .combine)
                 Link(destination: URL(string: "https://example.com/privacy")!) {
-                    Text("Privacy policy")
+                    Image(systemName: "hand.raised")
                 }
                 .accessibilityIdentifier("settings.privacy")
             }

@@ -22,6 +22,20 @@ Observations that shaped design decisions; the strongest one becomes the hot tak
   which is exactly the class of defect this project hunts, hit here by the
   harness itself before a single agent ran. Evidence:
   `fixtures/Ledgerly/clean/expenseList.json` (tree) vs `expenseList.png`.
+- **"Has a label" is not "has the right label" — and the audit engine only
+  checks the first.** Seeding 20 known defects and re-capturing showed Apple's
+  `performAccessibilityAudit` catching just 6 of them. The misses are not
+  obscure: SF Symbols silently supply a plausible-sounding label from the symbol
+  name, so the audit sees a description and passes. Measured on the same
+  element, clean vs seeded: delete `Delete expense` → **`Trash`**, save `Save` →
+  **`Selected`**, privacy policy `Privacy policy` → **`Block`**. A screen reader
+  now announces a destructive action as "Trash", the primary form action as
+  "Selected", and a legal link as "Block". A missing label is detectable by
+  tooling; a confidently wrong one is invisible to tooling *and* to sighted QA,
+  which is precisely why these ship. Evidence: `fixtures/Ledgerly/clean/` vs
+  `fixtures/LedgerlySeeded/seeded/` element trees.
+  This is why the agent reads the accessibility tree and the source together
+  instead of consuming audit output alone.
 - **Capture must not depend on process environment.** `TEST_RUNNER_A11Y_OUT`
   did not reach the runner, so captures landed in the simulator sandbox and the
   fixture directory came back empty while the test reported success. Switched to
