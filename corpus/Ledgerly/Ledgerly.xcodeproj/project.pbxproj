@@ -1,0 +1,410 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11074CA4D54C74BB4A35F6EB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4F996392A4CF8542BEDE55 /* SettingsView.swift */; };
+		37499986F122BC64CE3A8C58 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEEF15E27DB83D45F19BE51 /* Models.swift */; };
+		6680694FCAF232621DCCBD5A /* A11yCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CCA7E775B5AEEDC7D599E8 /* A11yCaptureTests.swift */; };
+		73CD3500017B09551CADA556 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B194A568BC958BA9427CAEF /* StatsView.swift */; };
+		7F90239BDFB643136B144E1D /* ExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C140F5EDFD3AC955DAA0394D /* ExpenseDetailView.swift */; };
+		85243F606AF4070693F950D1 /* LedgerlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C42285F60A69C2A53C0989 /* LedgerlyApp.swift */; };
+		CFA32434CAD114AAF8E88DD8 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860986B888C74BACF025CF5 /* AddExpenseView.swift */; };
+		D79A3B00655F62A65F993AF5 /* ExpenseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A46A424CB70F871B1D1A549D /* ExpenseListView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C75745BDEEC2F41AF52DE7D7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C7BF75CBD46FB0B468322F26 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7006B96BF3666240E9160E8;
+			remoteInfo = Ledgerly;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0860986B888C74BACF025CF5 /* AddExpenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseView.swift; sourceTree = "<group>"; };
+		27CCA7E775B5AEEDC7D599E8 /* A11yCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = A11yCaptureTests.swift; sourceTree = "<group>"; };
+		5E4F996392A4CF8542BEDE55 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		78D49CC4A391DE5118F01139 /* LedgerlyUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LedgerlyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B194A568BC958BA9427CAEF /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
+		A46A424CB70F871B1D1A549D /* ExpenseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseListView.swift; sourceTree = "<group>"; };
+		C140F5EDFD3AC955DAA0394D /* ExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailView.swift; sourceTree = "<group>"; };
+		E0C42285F60A69C2A53C0989 /* LedgerlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerlyApp.swift; sourceTree = "<group>"; };
+		EDEEF15E27DB83D45F19BE51 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		F6773294291C9F0179902676 /* Ledgerly.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Ledgerly.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1DCEF74933299A7AD8C35B73 /* LedgerlyUITests */ = {
+			isa = PBXGroup;
+			children = (
+				27CCA7E775B5AEEDC7D599E8 /* A11yCaptureTests.swift */,
+			);
+			path = LedgerlyUITests;
+			sourceTree = "<group>";
+		};
+		2DB8D70D8C5C66B2CDD4520C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F6773294291C9F0179902676 /* Ledgerly.app */,
+				78D49CC4A391DE5118F01139 /* LedgerlyUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3F0E42B528ACE5C91D350212 = {
+			isa = PBXGroup;
+			children = (
+				829488D077E82BA3B870C6E5 /* Ledgerly */,
+				1DCEF74933299A7AD8C35B73 /* LedgerlyUITests */,
+				2DB8D70D8C5C66B2CDD4520C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		829488D077E82BA3B870C6E5 /* Ledgerly */ = {
+			isa = PBXGroup;
+			children = (
+				0860986B888C74BACF025CF5 /* AddExpenseView.swift */,
+				C140F5EDFD3AC955DAA0394D /* ExpenseDetailView.swift */,
+				A46A424CB70F871B1D1A549D /* ExpenseListView.swift */,
+				E0C42285F60A69C2A53C0989 /* LedgerlyApp.swift */,
+				EDEEF15E27DB83D45F19BE51 /* Models.swift */,
+				5E4F996392A4CF8542BEDE55 /* SettingsView.swift */,
+				7B194A568BC958BA9427CAEF /* StatsView.swift */,
+			);
+			path = Ledgerly;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		21F336E08A10C4EFE70F6676 /* LedgerlyUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B61068E77919513203403923 /* Build configuration list for PBXNativeTarget "LedgerlyUITests" */;
+			buildPhases = (
+				6211165304E6C95C1691C760 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AA6577A716E509E60AC222E3 /* PBXTargetDependency */,
+			);
+			name = LedgerlyUITests;
+			packageProductDependencies = (
+			);
+			productName = LedgerlyUITests;
+			productReference = 78D49CC4A391DE5118F01139 /* LedgerlyUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F7006B96BF3666240E9160E8 /* Ledgerly */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 57A050B7B6A622390E5C1AF9 /* Build configuration list for PBXNativeTarget "Ledgerly" */;
+			buildPhases = (
+				4086C50DCE5CB4D6F49B194A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Ledgerly;
+			packageProductDependencies = (
+			);
+			productName = Ledgerly;
+			productReference = F6773294291C9F0179902676 /* Ledgerly.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C7BF75CBD46FB0B468322F26 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					21F336E08A10C4EFE70F6676 = {
+						TestTargetID = F7006B96BF3666240E9160E8;
+					};
+				};
+			};
+			buildConfigurationList = 4960720A0A9DF79D2E136324 /* Build configuration list for PBXProject "Ledgerly" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3F0E42B528ACE5C91D350212;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2DB8D70D8C5C66B2CDD4520C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F7006B96BF3666240E9160E8 /* Ledgerly */,
+				21F336E08A10C4EFE70F6676 /* LedgerlyUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4086C50DCE5CB4D6F49B194A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFA32434CAD114AAF8E88DD8 /* AddExpenseView.swift in Sources */,
+				7F90239BDFB643136B144E1D /* ExpenseDetailView.swift in Sources */,
+				D79A3B00655F62A65F993AF5 /* ExpenseListView.swift in Sources */,
+				85243F606AF4070693F950D1 /* LedgerlyApp.swift in Sources */,
+				37499986F122BC64CE3A8C58 /* Models.swift in Sources */,
+				11074CA4D54C74BB4A35F6EB /* SettingsView.swift in Sources */,
+				73CD3500017B09551CADA556 /* StatsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6211165304E6C95C1691C760 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6680694FCAF232621DCCBD5A /* A11yCaptureTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AA6577A716E509E60AC222E3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F7006B96BF3666240E9160E8 /* Ledgerly */;
+			targetProxy = C75745BDEEC2F41AF52DE7D7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		684C2B76EB93D1D28C3C5817 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		6C728B79C085D19552094CEA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		918AFA0F3716EAAE9DCEB865 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.a11yloop.ledgerly;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B206D5A66FF8F3FAA450B962 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.a11yloop.ledgerly;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		E5AA7FB2148683BF1E5CFC8A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.a11yloop.LedgerlyUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Ledgerly;
+			};
+			name = Release;
+		};
+		F30DDE2311BF3F81D3B18AE2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = dev.a11yloop.LedgerlyUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Ledgerly;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4960720A0A9DF79D2E136324 /* Build configuration list for PBXProject "Ledgerly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6C728B79C085D19552094CEA /* Debug */,
+				684C2B76EB93D1D28C3C5817 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		57A050B7B6A622390E5C1AF9 /* Build configuration list for PBXNativeTarget "Ledgerly" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				918AFA0F3716EAAE9DCEB865 /* Debug */,
+				B206D5A66FF8F3FAA450B962 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B61068E77919513203403923 /* Build configuration list for PBXNativeTarget "LedgerlyUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F30DDE2311BF3F81D3B18AE2 /* Debug */,
+				E5AA7FB2148683BF1E5CFC8A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C7BF75CBD46FB0B468322F26 /* Project object */;
+}
