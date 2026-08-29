@@ -1,55 +1,149 @@
 # a11y-loop
 
-Agentic accessibility audit-and-fix loop for SwiftUI apps. Finds accessibility
-violations on the **running** app, patches the safe classes in source, and
-proves every fix with a re-audit.
+An agentic accessibility audit-and-fix loop for SwiftUI apps. It finds
+accessibility defects on the **running** app, patches the mechanical ones in
+source, and proves each repair rather than asserting it.
 
-> micro1 Agentic Workflows Hackathon entry (Aug 2026). Everything in this repo
-> was built during the hackathon window unless marked otherwise; corpus apps
-> under `corpus/` declare their own provenance and license.
+> micro1 Agentic Workflows Hackathon entry, August 2026. Everything here was
+> built during the hackathon window. The corpus app under `corpus/Ledgerly/` was
+> written for this project (MIT); no third-party app code, no private data.
+>
+> Reproduce the headline result on any OS: **[REPRODUCING.md](REPRODUCING.md)**.
+> The iteration story, including the two experiments I removed and the point
+> where the evidence proved my own answer key wrong: **[CHANGELOG.md](CHANGELOG.md)**.
 
-## Who has this problem?
+## Who has this problem
 
-iOS teams shipping SwiftUI apps under the EU Accessibility Act (enforced since
-June 2025) — and every blind or low-vision user who hits an unlabeled button
-before the team does.
+iOS teams shipping SwiftUI under the European Accessibility Act, which became
+enforceable in June 2025 — and, before them, every blind or low-vision user who
+reaches a button the app never bothered to name.
 
-## What bottleneck makes it worth solving?
+## What bottleneck makes it worth solving
 
-Manual VoiceOver audits are slow, need scarce expertise, and get skipped under
-deadline pressure. Static linters can't see rendered reality: effective touch
-targets, merged accessibility elements, rendered contrast. So violations ship.
+Accessibility review is manual, needs scarce expertise, and is the first thing
+cut when a release is late. The tooling that is supposed to help has a specific
+blind spot, and this project is built around it:
 
-## Does the agent solve it well?
+**Apple's own accessibility audit caught 6 of the 20 defects I deliberately
+seeded.** Not because the misses were exotic, but because SwiftUI fills the gap
+with something plausible. Strip the label off a button and an SF Symbol supplies
+one from the icon name. Measured on the same elements, clean build versus seeded
+build:
 
-The loop closes end-to-end: **capture** (native `performAccessibilityAudit` +
-accessibility-tree dump on the simulator) → **audit** (agent localizes each
-violation to file:line) → **fix** (agent patches mechanical classes on a git
-branch; a human merges) → **verify** (deterministic re-check; on macOS, full
-re-capture). Output is a PR-ready diff plus an audit report an engineer would
-sign.
+| Control | Announces before | Announces after |
+|---|---|---|
+| Delete expense | "Delete expense" | **"Trash"** |
+| Save | "Save" | **"Selected"** |
+| Privacy policy | "Privacy policy" | **"Block"** |
 
-Measured on a seeded corpus with exact ground truth, against a fair baseline
-(one direct prompt to the same model with the same inputs). Primary metric:
-**verified-fix rate**. See `CHANGELOG.md` for the iteration story and
-`eval/` for the corpus.
+The audit engine sees a description and passes. A sighted reviewer sees a
+correct-looking screen. A screen-reader user hears a destructive action called
+"Trash", the primary action of a form called "Selected", and the app's only legal
+link called "Block". A missing label is detectable; a confidently wrong one is
+invisible to tooling and to QA, which is exactly why it ships.
 
-## Can another person reproduce the result?
-
-Yes, without a Mac: fixtures are committed, and the judge path is
+## What the agent does
 
 ```
-pip install -e .
-a11y-loop eval
-a11y-loop report
+capture (macOS, once)     accessibility tree + Apple audit + screenshots,
+                          at the default text size and at AX XXL
+        │                 committed as fixtures
+        ▼
+Auditor    reads the evidence and the whole source tree; follows a symptom on
+           one screen to a cause in a shared component file; measures rendered
+           tap targets from the tree
+        ▼
+Fixer      patches the mechanical classes on a copy of the app, naming controls
+           from a shared glossary so wording stays consistent across screens
+        ▼
+Verifier   re-derives what is still wrong, with no answer key; a deterministic
+           ledger re-dispatches anything reported but left unchanged
+        ▼
+verify     on macOS: rebuild, re-run the UI tests, re-capture, and diff the
+           audit against the pre-repair capture
 ```
 
-Full steps, versions, runtime and cost: `REPRODUCING.md` (lands with Phase 6).
-The macOS capture path (`a11y-loop capture`) is optional and documented there too.
+Contrast and type-size decisions are reported, never auto-patched: the right
+remedy is a design judgement, so it goes to a person. The Fixer works on a copy
+and produces a diff a human merges.
 
-## Status
+## Does it work
 
-Phase 0 scaffold. Pipeline stages land per the phase plan; this README grows
-with them.
+Measured against a one-shot prompt with the same model on the same 24-case
+corpus. The full table, per case, is in [CHANGELOG.md](CHANGELOG.md), and
+`a11y-loop report` regenerates it.
 
-<!-- TODO Phase 6: main failure mode + hot take -->
+The result that matters is not the headline rate, which the two arms trade
+between runs. It is *which* cases each arm can reach. The baseline resolves the
+ordinary defects and cannot touch the two that require a running app: a shared
+component whose broken grouping surfaces on two other screens, and a tap target
+that renders at 15×20pt with nothing in the source saying so. The agent resolves
+both, and declines the trap.
+
+## What verification on the real app says
+
+`a11y-loop verify` rebuilds each arm's patched app, re-runs its UI tests, and
+re-captures it in the simulator. Both arms build and pass. Then:
+
+| | Baseline | Agent |
+|---|---|---|
+| Audit issues resolved | 13 | **14** |
+| New issues introduced | **4** | 8 |
+| Pre-existing issues resurfaced¹ | 2 | 3 |
+
+¹ Issues the *clean* app also has, which reappear when correct grouping puts
+elements back in the tree. Not damage the repair did, so they are counted
+separately rather than held against either arm.
+
+The agent fixes more and breaks more. One of its eight is a concrete defect the
+portable checks missed entirely: it wrote a second accessibility identifier onto
+an element that already had one, and the tree now reports
+`settings.version-settings.version`. That is a real regression, found only
+because the app was rebuilt and re-read, and it is the clearest argument in this
+repo for why the output is a diff a person merges rather than a commit.
+
+## The trap, and the main failure mode
+
+One case in the corpus is a button carrying `.frame(width: 24, height: 24)`.
+It reads as a touch target below the 44pt minimum, and I seeded it as a genuine
+defect. It is not one: inside a `Form` row it renders at **361×54pt**.
+
+I found that out because the agent kept "failing" the case. The capture proved
+the agent right and my answer key wrong. So the case became a trap — passed by
+leaving the code alone, failed by patching it. The baseline patches it every
+time, because from source there is no way to tell.
+
+That inverts the usual framing of the main failure mode. The risk in this system
+is not that it misses defects; the baseline and the agent both find nearly all of
+them. The risk is **confident repair of code that was never broken**, and the
+only thing standing between an agent and that failure is evidence from the
+running app.
+
+## Hot take
+
+Wording the prompt is not engineering the agent. Over three iterations, every
+instruction I added to correct one failure mode manufactured its opposite. I
+explained what runtime evidence reveals, and the auditor stopped doing the
+ordinary source review it had been doing for free. I added a line about
+restraint, and it under-reported everywhere — four ordinary defects it had
+resolved the run before. Each fix was locally reasonable and globally a swing.
+
+What ended it was giving up on asking the model to police itself. The Fixer's
+thoroughness is now checked by diffing the source around every anchor it
+reported: anything reported but unchanged, and not explicitly declined, gets
+re-dispatched. No wording involved, nothing to drift. The reliable parts of this
+system are the parts that do not depend on how I phrased something — and the
+useful rule I would take to the next build is that a behaviour you can only get
+by asking for it in the prompt is a behaviour you have not built yet.
+
+## Layout
+
+| Path | |
+|---|---|
+| `src/a11y_loop/` | pipeline, baseline, scoring, checks, capture, verification |
+| `corpus/Ledgerly/` | the clean app; `LedgerlySeeded/` is generated, never hand-edited |
+| `eval/seeds.py` | every seeded defect as an exact, inspectable transformation |
+| `eval/ground_truth.json` | generated answer key — 24 cases, 22 scored |
+| `fixtures/` | captured runtime evidence, committed so the eval runs anywhere |
+| `trajectories/` | every agent run: instructions, tool calls, tool results, output |
+| `results/` | scored runs and the patched app each arm produced |

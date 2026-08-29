@@ -1,0 +1,245 @@
+{
+  "arm": "agent",
+  "checks": [
+    {
+      "id": "S01",
+      "passed": true,
+      "reason": "explicit accessibilityLabel(\"Add expense\") on 'expenses.add'"
+    },
+    {
+      "id": "S02",
+      "passed": true,
+      "reason": ".accessibilityHidden(true) attached to 'row.icon'"
+    },
+    {
+      "id": "S03",
+      "passed": true,
+      "reason": ".accessibilityElement(children: .combine) attached to 'row.container'"
+    },
+    {
+      "id": "S04",
+      "passed": true,
+      "reason": "explicit accessibilityLabel(\"Delete expense\") on 'detail.delete'"
+    },
+    {
+      "id": "S05",
+      "passed": true,
+      "reason": "explicit accessibilityLabel(\"Flag expense\") on 'detail.flag'"
+    },
+    {
+      "id": "S06",
+      "passed": true,
+      "reason": "'detail.duplicate' correctly left unchanged"
+    },
+    {
+      "id": "S07",
+      "passed": false,
+      "reason": "'add.cancel' exposes no accessible name (no label, no visible title)"
+    },
+    {
+      "id": "S08",
+      "passed": true,
+      "reason": "explicit accessibilityLabel(\"Save expense\") on 'add.save'"
+    },
+    {
+      "id": "S09",
+      "passed": true,
+      "reason": "visible title 'Title' names 'add.title'"
+    },
+    {
+      "id": "S10",
+      "passed": true,
+      "reason": "visible title 'Amount' names 'add.amount'"
+    },
+    {
+      "id": "R01",
+      "passed": false,
+      "reason": "report-only case: detection is scored, fixing is not attempted"
+    },
+    {
+      "id": "S11",
+      "passed": true,
+      "reason": ".accessibilityAddTraits(.isHeader) attached to 'stats.header.categories'"
+    },
+    {
+      "id": "S12",
+      "passed": true,
+      "reason": ".accessibilityAddTraits(.isHeader) attached to 'stats.header.largest'"
+    },
+    {
+      "id": "S13",
+      "passed": true,
+      "reason": ".accessibilityElement(children: .combine) attached to 'stats.largest.row'"
+    },
+    {
+      "id": "S14",
+      "passed": true,
+      "reason": ".accessibilityLabel(category.rawValue) attached to 'stats.bar'; .accessibilityValue(total.formatted(.currency(code: \"USD\") attached to 'stats.bar'"
+    },
+    {
+      "id": "S15",
+      "passed": true,
+      "reason": "visible title 'Notifications' names 'settings.notifications'"
+    },
+    {
+      "id": "S16",
+      "passed": true,
+      "reason": "visible title 'Round up purchases' names 'settings.roundup'"
+    },
+    {
+      "id": "S17",
+      "passed": true,
+      "reason": "explicit accessibilityLabel(\"Privacy policy\") on 'settings.privacy'"
+    },
+    {
+      "id": "S18",
+      "passed": true,
+      "reason": ".accessibilityElement(children: .combine) attached to 'settings.version'"
+    },
+    {
+      "id": "R02",
+      "passed": false,
+      "reason": "report-only case: detection is scored, fixing is not attempted"
+    },
+    {
+      "id": "H01",
+      "passed": true,
+      "reason": ".accessibilityElement(children: .contain) on 'card.container'"
+    },
+    {
+      "id": "H02",
+      "passed": true,
+      "reason": ".contentShape(Rectangle() attached to 'card.action'"
+    },
+    {
+      "id": "H03",
+      "passed": true,
+      "reason": "no .fixedSize on 'stats.total'"
+    },
+    {
+      "id": "H04",
+      "passed": true,
+      "reason": "no .fixedSize on 'settings.limit.title'"
+    }
+  ],
+  "passed": 21,
+  "simulator": {
+    "arm": "agent",
+    "builds": true,
+    "ui_tests_pass": true,
+    "audit_issues_resolved": 14,
+    "regressions": 8,
+    "pre_existing_resurfaced": 3,
+    "per_screen": {
+      "addExpense": {
+        "issues_before": 4,
+        "issues_after": 1,
+        "resolved": [
+          "Dynamic Type font sizes are unsupported",
+          "Element has no description",
+          "Element has no description"
+        ],
+        "regressions": [],
+        "pre_existing_resurfaced": []
+      },
+      "addExpense@axxl": {
+        "issues_before": 3,
+        "issues_after": 0,
+        "resolved": [
+          "Dynamic Type font sizes are unsupported",
+          "Element has no description",
+          "Element has no description"
+        ],
+        "regressions": [],
+        "pre_existing_resurfaced": []
+      },
+      "expenseDetail": {
+        "issues_before": 2,
+        "issues_after": 2,
+        "resolved": [],
+        "regressions": [],
+        "pre_existing_resurfaced": []
+      },
+      "expenseDetail@axxl": {
+        "issues_before": 1,
+        "issues_after": 1,
+        "resolved": [],
+        "regressions": [],
+        "pre_existing_resurfaced": []
+      },
+      "expenseList": {
+        "issues_before": 2,
+        "issues_after": 6,
+        "resolved": [
+          "Contrast nearly passed"
+        ],
+        "regressions": [
+          "Contrast nearly passed",
+          "Contrast nearly passed",
+          "Contrast nearly passed",
+          "Contrast nearly passed",
+          "Contrast nearly passed"
+        ],
+        "pre_existing_resurfaced": []
+      },
+      "expenseList@axxl": {
+        "issues_before": 1,
+        "issues_after": 2,
+        "resolved": [
+          "Contrast failed"
+        ],
+        "regressions": [
+          "Contrast failed",
+          "Contrast failed"
+        ],
+        "pre_existing_resurfaced": []
+      },
+      "settings": {
+        "issues_before": 5,
+        "issues_after": 4,
+        "resolved": [
+          "Contrast failed",
+          "Label not human-readable"
+        ],
+        "regressions": [],
+        "pre_existing_resurfaced": [
+          "Label not human-readable"
+        ]
+      },
+      "settings@axxl": {
+        "issues_before": 1,
+        "issues_after": 1,
+        "resolved": [
+          "Contrast failed"
+        ],
+        "regressions": [
+          "Contrast failed"
+        ],
+        "pre_existing_resurfaced": []
+      },
+      "stats": {
+        "issues_before": 2,
+        "issues_after": 1,
+        "resolved": [
+          "Dynamic Type font sizes are unsupported",
+          "Label not human-readable"
+        ],
+        "regressions": [],
+        "pre_existing_resurfaced": [
+          "Label not human-readable"
+        ]
+      },
+      "stats@axxl": {
+        "issues_before": 2,
+        "issues_after": 2,
+        "resolved": [
+          "Dynamic Type font sizes are unsupported"
+        ],
+        "regressions": [],
+        "pre_existing_resurfaced": [
+          "Label not human-readable"
+        ]
+      }
+    }
+  }
+}

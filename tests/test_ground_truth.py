@@ -20,6 +20,10 @@ ROOT = Path(__file__).resolve().parent.parent
 GROUND_TRUTH = json.loads((ROOT / "eval" / "ground_truth.json").read_text())
 CASES = GROUND_TRUTH["cases"]
 MECHANICAL = [c for c in CASES if c["fixable"]]
+# Traps invert the invariant: the seeded state is already correct, and the case
+# is failed by changing it rather than by leaving it.
+TRAPS = [c for c in MECHANICAL if c["violation_class"] == "false_positive_trap"]
+DEFECTS = [c for c in MECHANICAL if c["violation_class"] != "false_positive_trap"]
 REPORT_ONLY = [c for c in CASES if not c["fixable"]]
 
 
@@ -38,7 +42,7 @@ def test_corpus_meets_the_brief():
     assert any(c["violation_class"] == "semantic_value_loss" for c in CASES), "hard case missing"
 
 
-@pytest.mark.parametrize("case", MECHANICAL, ids=ids(MECHANICAL))
+@pytest.mark.parametrize("case", DEFECTS, ids=ids(DEFECTS))
 def test_check_fails_on_seeded_source(case):
     result = run_check(case["check"], source_for(case, "seeded"))
     assert not result.passed, (
@@ -47,7 +51,7 @@ def test_check_fails_on_seeded_source(case):
     )
 
 
-DEGRADED = [c for c in MECHANICAL if c.get("exists_in_clean", True)]
+DEGRADED = [c for c in DEFECTS if c.get("exists_in_clean", True)]
 
 
 @pytest.mark.parametrize("case", DEGRADED, ids=ids(DEGRADED))
@@ -62,6 +66,19 @@ def test_check_passes_on_clean_source(case):
 @pytest.mark.parametrize("case", REPORT_ONLY, ids=ids(REPORT_ONLY))
 def test_report_only_cases_are_never_scored_as_fixed(case):
     assert not run_check(case["check"], source_for(case, "clean")).passed
+
+
+@pytest.mark.parametrize("case", TRAPS, ids=ids(TRAPS))
+def test_trap_passes_while_untouched(case):
+    """A trap is passed by leaving the code alone; the seeded state is correct."""
+    assert run_check(case["check"], source_for(case, "seeded")).passed
+
+
+@pytest.mark.parametrize("case", TRAPS, ids=ids(TRAPS))
+def test_trap_fails_once_patched(case):
+    """And failed by 'fixing' it — which is what an unverified suspicion does."""
+    patched = source_for(case, "seeded").replace(".frame(width: 24, height: 24)", ".frame(minWidth: 44, minHeight: 44)")
+    assert not run_check(case["check"], patched).passed
 
 
 def test_every_case_is_anchored_in_its_file():

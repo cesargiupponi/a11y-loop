@@ -24,6 +24,7 @@ import re
 from pathlib import Path
 
 from a11y_loop.agent_runtime import run_agent
+from a11y_loop.checks import modifier_chain
 from a11y_loop.corpus import Screen, load_screens, prepare_workspace
 from a11y_loop.paths import results_dir
 
@@ -76,7 +77,15 @@ to its children in the tree dump, so several elements can report the same
 identifier: when that happens, find the real element in the source of the
 component that renders it and anchor your finding there.
 
-Report a defect once, against the element that must change.
+Report a defect once, against the element that must change. Give each finding
+exactly one defect: two problems on one element are two findings, or the second
+gets lost behind the first.
+
+One caveat specific to tap targets: a small `.frame` in the source does not mean
+a small tap target, because a row or a container often expands it. Check the
+rendered frame in the tree before reporting a hit-region defect, and if the tree
+shows the target is already at least 44pt, it is not a defect. This applies to
+tap targets, not to the other classes above.
 """
 
 AUDITOR_PROMPT = """Audit the screen `{screen}` of the app in this workspace.
@@ -138,6 +147,11 @@ Rules that matter more than the fix itself:
 - Change only what the finding calls for. Do not restyle, refactor, or "improve"
   code you were not asked to touch.
 - Do not patch findings marked `mechanical: false`. Those are for a human.
+
+Every mechanical finding must end up in `applied` or in `skipped` with a reason.
+A finding you neither applied nor skipped is the one that reaches users. When a
+finding bundles a mechanical defect with a design concern, apply the mechanical
+part and note the rest.
 """
 
 FIXER_PROMPT = """Apply fixes to the workspace for these audited findings.
@@ -205,6 +219,42 @@ Reply with one JSON block:
 """
 
 
+def unaddressed_findings(
+    findings: list[dict], applied: dict, before: dict[str, str], workspace: Path
+) -> list[dict]:
+    """Findings the Fixer neither changed nor consciously declined.
+
+    Determined by comparing the source region around each finding's anchor
+    before and after the Fixer ran — not by asking the model whether it was
+    thorough. Self-assessment moved with the wording of the prompt; a diff does
+    not. No ground truth is involved: this compares the agent's own findings
+    against its own edits.
+    """
+    declined = {s.get("anchor") for s in applied.get("skipped", [])}
+    pending = []
+
+    for finding in findings:
+        anchor = finding.get("anchor")
+        if not anchor or anchor in declined or finding.get("mechanical") is False:
+            continue
+
+        path = finding.get("file") or ""
+        candidates = [workspace / path] if path else []
+        candidates += [workspace / f for f in before if anchor in before[f]]
+
+        for candidate in candidates:
+            key = str(candidate)
+            if key not in before or not candidate.exists():
+                continue
+            was = "\n".join(modifier_chain(before[key], anchor))
+            now = "\n".join(modifier_chain(candidate.read_text(), anchor))
+            if was and was == now:
+                pending.append({**finding, "why": "reported but the source is unchanged"})
+            break
+
+    return pending
+
+
 def _parse(text: str, key: str, default):
     match = JSON_BLOCK.search(text)
     if not match:
@@ -263,7 +313,7 @@ async def audit_screen(screen: Screen, large: Screen | None, workspace: Path) ->
         ),
         allowed_tools=["Read", "Grep", "Glob"],
         cwd=workspace,
-        max_turns=12,
+        max_turns=25,
     )
     return _parse(result.text, "findings", []), result.cost_usd, result.duration_seconds
 
@@ -301,7 +351,7 @@ async def verify_screen(
         ),
         allowed_tools=["Read", "Grep", "Glob"],
         cwd=workspace,
-        max_turns=12,
+        max_turns=25,
     )
     return _parse_all(result.text), result.cost_usd, result.duration_seconds
 
@@ -329,6 +379,10 @@ async def run_agent_arm() -> dict:
             finding["screen"] = screen.name
         all_findings.extend(findings)
 
+        before = {
+            str(path): path.read_text()
+            for path in (workspace / "Ledgerly").glob("*.swift")
+        }
         applied, c, d = await fix_screen(screen, findings, glossary, workspace)
         cost += c
         duration += d
@@ -338,8 +392,15 @@ async def run_agent_arm() -> dict:
         duration += d
         verification[screen.name] = checked
 
-        unresolved = checked.get("unresolved", []) + [
-            {**r, "issue": r.get("what_broke", "regression")} for r in checked.get("regressions", [])
+        unresolved = (
+            unaddressed_findings(findings, applied, before, workspace)
+            + checked.get("unresolved", [])
+            + [{**r, "issue": r.get("what_broke", "regression")} for r in checked.get("regressions", [])]
+        )
+        seen: set[str] = set()
+        unresolved = [
+            u for u in unresolved
+            if u.get("anchor") and not (u["anchor"] in seen or seen.add(u["anchor"]))
         ]
         retried = 0
         if unresolved:

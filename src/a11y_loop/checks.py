@@ -176,6 +176,19 @@ def run_check(check: dict, source: str) -> CheckResult:
                     f".{check['modifier']}({argument.strip()}) on {check['anchor']!r} still uses {forbidden}",
                 )
         return CheckResult(True, f".{check['modifier']}({argument.strip()}) on {check['anchor']!r}")
+    if kind == "unchanged":
+        chain = modifier_chain(source, check["anchor"])
+        if not chain:
+            return CheckResult(False, f"anchor {check['anchor']!r} not found in source")
+        text = "\n".join(chain)
+        needle = check["must_still_contain"]
+        if needle.replace(" ", "") not in text.replace(" ", ""):
+            return CheckResult(
+                False,
+                f"{check['anchor']!r} was modified ({needle} is gone); the running app showed "
+                "nothing needed fixing here",
+            )
+        return CheckResult(True, f"{check['anchor']!r} correctly left unchanged")
     if kind == "no_modifier":
         chain = modifier_chain(source, check["anchor"])
         if not chain:

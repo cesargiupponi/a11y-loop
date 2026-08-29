@@ -100,22 +100,30 @@ async def run_agent(
             + "\n"
         )
 
-        async for message in query(prompt=prompt, options=options):
-            kind = type(message).__name__
-            if kind in {"AssistantMessage", "UserMessage"}:
-                blocks = [_block_to_record(b) for b in message.content] if isinstance(message.content, list) else [{"text": str(message.content)}]
-                trajectory.write(json.dumps({"event": kind, "blocks": blocks}) + "\n")
-                for block, record in zip(message.content if isinstance(message.content, list) else [], blocks):
-                    if record.get("text") and kind == "AssistantMessage":
-                        texts.append(record["text"])
-                    if record.get("tool"):
-                        tool_calls.append(record["tool"])
-            elif kind == "ResultMessage":
-                cost = getattr(message, "total_cost_usd", 0.0) or 0.0
-                turns = getattr(message, "num_turns", 0) or 0
-                trajectory.write(
-                    json.dumps({"event": "result", "cost_usd": cost, "turns": turns}) + "\n"
-                )
+        try:
+            stream = query(prompt=prompt, options=options)
+            async for message in stream:
+                kind = type(message).__name__
+                if kind in {"AssistantMessage", "UserMessage"}:
+                    blocks = [_block_to_record(b) for b in message.content] if isinstance(message.content, list) else [{"text": str(message.content)}]
+                    trajectory.write(json.dumps({"event": kind, "blocks": blocks}) + "\n")
+                    for record in blocks:
+                        if record.get("text") and kind == "AssistantMessage":
+                            texts.append(record["text"])
+                        if record.get("tool"):
+                            tool_calls.append(record["tool"])
+                elif kind == "ResultMessage":
+                    cost = getattr(message, "total_cost_usd", 0.0) or 0.0
+                    turns = getattr(message, "num_turns", 0) or 0
+                    trajectory.write(
+                        json.dumps({"event": "result", "cost_usd": cost, "turns": turns}) + "\n"
+                    )
+        except Exception as error:
+            # A run that exhausts its turns still produced work worth keeping, and
+            # one stalled agent should not discard an evaluation that takes fifteen
+            # minutes to reach this point. Record it and carry on with what it said.
+            trajectory.write(json.dumps({"event": "error", "error": str(error)[:2000]}) + "\n")
+            print(f"    [{name}] agent ended early: {str(error)[:120]}")
 
     return RunResult(
         text="\n".join(texts),

@@ -131,10 +131,19 @@ SEEDS: list[Seed] = [
         id="S06",
         screen="expenseDetail",
         file=DETAIL,
-        violation_class="hit_region",
+        violation_class="false_positive_trap",
         fixable=True,
         anchor="detail.duplicate",
-        description="Duplicate-expense button is rendered at 24pt, below the 44pt minimum touch target.",
+        description=(
+            "TRAP — looks like a defect in source, is not one at runtime. The button carries "
+            "`.frame(width: 24, height: 24)`, which reads as a touch target below the 44pt "
+            "minimum. The running app disagrees: inside a Form row the tap target renders at "
+            "361x54pt. The correct behaviour is to leave it alone. An arm that patches this is "
+            "changing working code on an unverified suspicion, which is the cost of reviewing "
+            "source without running the app.\n"
+            "This case was originally seeded as a genuine hit-region defect. The capture proved "
+            "it was not, so it was reclassified rather than removed — see the changelog."
+        ),
         find="            Section {\n                Toggle(",
         replace="""            Section {
                 Button {
@@ -146,7 +155,11 @@ SEEDS: list[Seed] = [
                 .accessibilityLabel("Duplicate expense")
                 .accessibilityIdentifier("detail.duplicate")
                 Toggle(""",
-        check={"type": "min_touch_target", "anchor": "detail.duplicate", "minimum": 44},
+        check={
+            "type": "unchanged",
+            "anchor": "detail.duplicate",
+            "must_still_contain": ".frame(width: 24, height: 24)",
+        },
         exists_in_clean=False,
     ),
     # ----------------------------------------------------------------- addExpense

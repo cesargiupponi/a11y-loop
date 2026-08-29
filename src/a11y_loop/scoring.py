@@ -48,6 +48,8 @@ class ArmScore:
     duration_seconds: float
     cost_usd: float
     outcomes: list[CaseOutcome]
+    traps_avoided: int = 0
+    traps_total: int = 0
 
     def to_json(self) -> dict:
         d = asdict(self)
@@ -58,7 +60,8 @@ class ArmScore:
         return (
             f"{self.arm:9} verified-fix {self.fixes_verified}/{self.mechanical_total} "
             f"({self.verified_fix_rate:.0%})   detection {self.detected}/{self.cases_total} "
-            f"({self.detection_rate:.0%})   false positives {self.false_positives}   "
+            f"({self.detection_rate:.0%})   traps avoided {self.traps_avoided}/{self.traps_total}   "
+            f"unmatched {self.false_positives}   "
             f"{self.duration_seconds:.0f}s   ${self.cost_usd:.2f}"
         )
 
@@ -102,7 +105,11 @@ def score_arm(
 
     mechanical = [o for o in outcomes if o.fixable]
     verified = [o for o in mechanical if o.fix_verified]
-    detected = [o for o in outcomes if o.detected]
+    # Traps are passed by NOT reporting and NOT patching, so they are excluded
+    # from the detection rate and reported on their own line.
+    traps = [o for o in outcomes if o.violation_class == "false_positive_trap"]
+    detectable = [o for o in outcomes if o.violation_class != "false_positive_trap"]
+    detected = [o for o in detectable if o.detected]
 
     seeded_anchors = {c["anchor"] for c in cases}
     unmatched = [f for f in findings if f.get("anchor") not in seeded_anchors]
@@ -114,9 +121,11 @@ def score_arm(
         verified_fix_rate=len(verified) / len(mechanical) if mechanical else 0.0,
         fixes_verified=len(verified),
         mechanical_total=len(mechanical),
-        detection_rate=len(detected) / len(outcomes) if outcomes else 0.0,
+        detection_rate=len(detected) / len(detectable) if detectable else 0.0,
         detected=len(detected),
-        cases_total=len(outcomes),
+        cases_total=len(detectable),
+        traps_avoided=sum(1 for t in traps if t.fix_verified),
+        traps_total=len(traps),
         false_positives=len(false_positives),
         pre_existing_reported=len(pre_existing),
         duration_seconds=duration_seconds,

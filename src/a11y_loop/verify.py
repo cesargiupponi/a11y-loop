@@ -88,24 +88,35 @@ def simulator_verify(arm: str) -> dict:
 
     before = _load_capture(repo_root() / "fixtures" / "LedgerlySeeded" / "seeded")
     after = _load_capture(after_dir)
+    clean = _load_capture(repo_root() / "fixtures" / "Ledgerly" / "clean")
 
     per_screen = {}
-    resolved = introduced = 0
+    resolved = regressions = restored = 0
     for screen, before_capture in sorted(before.items()):
         after_capture = after.get(screen)
         if not after_capture:
             continue
         before_issues = {_issue_key(i) for i in before_capture["issues"]}
         after_issues = {_issue_key(i) for i in after_capture["issues"]}
+        clean_issues = {_issue_key(i) for i in clean.get(screen, {"issues": []})["issues"]}
+
         gone = before_issues - after_issues
         new = after_issues - before_issues
+        # An issue that the correct app also has is not damage the repair did.
+        # Restoring proper grouping puts elements back in the tree, and the
+        # audit then reports on them again exactly as it does for the clean app.
+        new_but_present_when_correct = {n for n in new if n in clean_issues}
+        genuinely_new = new - new_but_present_when_correct
+
         resolved += len(gone)
-        introduced += len(new)
+        regressions += len(genuinely_new)
+        restored += len(new_but_present_when_correct)
         per_screen[screen] = {
             "issues_before": len(before_issues),
             "issues_after": len(after_issues),
             "resolved": sorted(g[1] for g in gone),
-            "introduced": sorted(n[1] for n in new),
+            "regressions": sorted(n[1] for n in genuinely_new),
+            "pre_existing_resurfaced": sorted(n[1] for n in new_but_present_when_correct),
         }
 
     return {
@@ -113,7 +124,8 @@ def simulator_verify(arm: str) -> dict:
         "builds": True,
         "ui_tests_pass": True,
         "audit_issues_resolved": resolved,
-        "audit_issues_introduced": introduced,
+        "regressions": regressions,
+        "pre_existing_resurfaced": restored,
         "per_screen": per_screen,
     }
 
@@ -139,8 +151,9 @@ def run_verify(app: str = "agent") -> int:
             print("verify: patched app builds but its UI tests fail", file=sys.stderr)
         else:
             print(
-                f"verify: audit issues resolved {simulator['audit_issues_resolved']}, "
-                f"introduced {simulator['audit_issues_introduced']}"
+                f"verify: builds, UI tests pass. Audit issues resolved "
+                f"{simulator['audit_issues_resolved']}, regressions {simulator['regressions']}, "
+                f"pre-existing issues resurfaced {simulator['pre_existing_resurfaced']}"
             )
     else:
         print("verify: not macOS — portable checks only (this is the judge path).")
