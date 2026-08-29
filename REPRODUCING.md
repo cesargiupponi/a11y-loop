@@ -56,6 +56,23 @@ Then render the table:
 ./.venv/bin/a11y-loop report
 ```
 
+### Reproducing the headline number, not a single run
+
+Model runs are not deterministic. On this corpus the *total* is fairly stable
+while the case that fails moves between runs, so one run is not a result. The
+numbers reported in the README are a mean over three runs of each arm, produced
+by:
+
+```bash
+./.venv/bin/a11y-loop eval --repeat 3
+```
+
+That writes each individual run to `results/runs/` and a mean, a range, and the
+per-run list of failed cases to `results/variance.json`; `a11y-loop report` then
+leads with the mean instead of the last run. Budget roughly 50 minutes and $33.
+Expect your own means to land near the published ones and your per-run failures
+to differ from ours — that variation is the point of measuring it this way.
+
 ### What it does and what it costs
 
 | Arm | What runs | Approx. time | Approx. cost |

@@ -1,0 +1,62 @@
+{
+  "baseline-source_only": {
+    "runs": 3,
+    "mechanical_total": 22,
+    "fixes_verified": [
+      19,
+      19,
+      19
+    ],
+    "mean": 19,
+    "min": 19,
+    "max": 19,
+    "mean_rate": 0.8636363636363636,
+    "cost_usd_mean": 1.4747946666666667,
+    "duration_seconds_mean": 148.574160722647,
+    "failed_cases": [
+      [
+        "H01",
+        "H02",
+        "S06"
+      ],
+      [
+        "H01",
+        "H02",
+        "S06"
+      ],
+      [
+        "H01",
+        "H02",
+        "S06"
+      ]
+    ]
+  },
+  "agent": {
+    "runs": 3,
+    "mechanical_total": 22,
+    "fixes_verified": [
+      21,
+      20,
+      20
+    ],
+    "mean": 20.333333333333332,
+    "min": 20,
+    "max": 21,
+    "mean_rate": 0.9242424242424242,
+    "cost_usd_mean": 9.7126815,
+    "duration_seconds_mean": 798.1201314853582,
+    "failed_cases": [
+      [
+        "S03"
+      ],
+      [
+        "S03",
+        "S14"
+      ],
+      [
+        "S03",
+        "S14"
+      ]
+    ]
+  }
+}

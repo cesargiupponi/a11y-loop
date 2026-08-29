@@ -4,8 +4,16 @@ Primary metric: **verified-fix rate** — of the mechanical seeded violations, t
 share whose check passes after the arm's patches are applied. Detection alone
 does not count; the patch has to hold up.
 
-Detection is scored separately and includes report-only cases, where the correct
-remedy is a human design decision and only the finding is expected.
+Elements flagged is scored separately and includes report-only cases, where the
+correct remedy is a human design decision and only the finding is expected.
+
+That secondary number is deliberately named for what it measures. A finding is
+matched to a case by the element it names, not by the defect it describes, so an
+arm that reports *any* problem on an element is credited with flagging it. When
+two defects share one element — a row that is both fragmented and low-contrast —
+this over-credits both arms equally. The primary metric does not inherit the
+weakness: it is decided by running each case's check against the patched source,
+so a case only counts once the defect is actually gone.
 
 Findings that match no seeded case are not automatically wrong: the clean app
 carries genuine pre-existing issues. Those are reported as `pre_existing`;
@@ -59,7 +67,7 @@ class ArmScore:
     def summary_line(self) -> str:
         return (
             f"{self.arm:9} verified-fix {self.fixes_verified}/{self.mechanical_total} "
-            f"({self.verified_fix_rate:.0%})   detection {self.detected}/{self.cases_total} "
+            f"({self.verified_fix_rate:.0%})   elements flagged {self.detected}/{self.cases_total} "
             f"({self.detection_rate:.0%})   traps avoided {self.traps_avoided}/{self.traps_total}   "
             f"unmatched {self.false_positives}   "
             f"{self.duration_seconds:.0f}s   ${self.cost_usd:.2f}"

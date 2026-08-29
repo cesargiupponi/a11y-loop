@@ -70,37 +70,59 @@ and produces a diff a human merges.
 ## Does it work
 
 Measured against a one-shot prompt with the same model on the same 24-case
-corpus. The full table, per case, is in [CHANGELOG.md](CHANGELOG.md), and
-`a11y-loop report` regenerates it.
+corpus, over **three runs of each arm** — model runs are not deterministic, and
+one run is not a result. Reproduce with `a11y-loop eval --repeat 3`.
 
-The result that matters is not the headline rate, which the two arms trade
-between runs. It is *which* cases each arm can reach. The baseline resolves the
-ordinary defects and cannot touch the two that require a running app: a shared
-component whose broken grouping surfaces on two other screens, and a tap target
-that renders at 15×20pt with nothing in the source saying so. The agent resolves
-both, and declines the trap.
+| Verified-fix rate | Mean of 3 | Range |
+|---|---|---|
+| Simple baseline | 86% (19.0/22) | 19–19 |
+| **Agent** | **92% (20.3/22)** | 20–21 |
+
+Six points, and the composition matters more than the rate. **The baseline fails
+the same three cases in every single run** — zero variance:
+
+| Case | What it is | Baseline | Agent |
+|---|---|---|---|
+| H01 | Shared `Card` breaks grouping; symptom on two screens, cause in a third file | fail ×3 | **pass ×3** |
+| H02 | Tap target renders at 15×20pt with no frame in source stating it | fail ×3 | **pass ×3** |
+| S06 | Trap: source looks defective, app renders it at 361×54pt — correct action is none | fail ×3 | **pass ×3** |
+
+Those three are not unlucky draws. They are what source-only review cannot
+reach, and it misses them with perfect reliability. The agent resolves all three
+in all three runs.
+
+Its own gap is honest too: `S03` fails every run, a real limitation, and `S14`
+fails two runs in three, which is noise. The best single run scored 95%; the
+mean is 92%, and the mean is what this README reports.
 
 ## What verification on the real app says
 
-`a11y-loop verify` rebuilds each arm's patched app, re-runs its UI tests, and
-re-captures it in the simulator. Both arms build and pass. Then:
+The portable checks decide the headline metric. `a11y-loop verify` makes the
+stronger claim available on macOS: rebuild each arm's patched app, re-run its UI
+tests, re-capture it, and diff the audit against the pre-repair capture. Both
+arms build and pass their tests. Then:
 
 | | Baseline | Agent |
 |---|---|---|
-| Audit issues resolved | 13 | **14** |
-| New issues introduced | **4** | 8 |
-| Pre-existing issues resurfaced¹ | 2 | 3 |
+| Audit issues resolved | 14 | 11 |
+| **New issues introduced** | 11 | **0** |
+| Pre-existing issues resurfaced¹ | 0 | 3 |
 
 ¹ Issues the *clean* app also has, which reappear when correct grouping puts
 elements back in the tree. Not damage the repair did, so they are counted
 separately rather than held against either arm.
 
-The agent fixes more and breaks more. One of its eight is a concrete defect the
-portable checks missed entirely: it wrote a second accessibility identifier onto
-an element that already had one, and the tree now reports
-`settings.version-settings.version`. That is a real regression, found only
-because the app was rebuilt and re-read, and it is the clearest argument in this
-repo for why the output is a diff a person merges rather than a commit.
+The baseline clears more raw audit issues and introduces eleven new ones doing
+it — four Dynamic Type failures, seven contrast. It is editing code it cannot
+check, and the audit only says so afterwards. The agent clears fewer and
+introduces none.
+
+This reverses what an earlier configuration measured: at the point the agent was
+still carrying the ledger bug, it introduced eight issues of its own, including
+writing a second accessibility identifier onto an element that already had one
+(`settings.version-settings.version`). That defect was invisible to the portable
+checks and surfaced only because the app was rebuilt and re-read — which is the
+argument for verification, and for the output being a diff a person merges.
 
 ## The trap, and the main failure mode
 

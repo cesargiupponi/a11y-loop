@@ -27,6 +27,7 @@ from a11y_loop.agent_runtime import run_agent
 from a11y_loop.checks import modifier_chain
 from a11y_loop.corpus import Screen, load_screens, prepare_workspace
 from a11y_loop.paths import results_dir
+from a11y_loop.sweep import render as render_sweep, sweep_workspace
 
 JSON_BLOCK = re.compile(r"```json\s*(.*?)```", re.S)
 
@@ -112,6 +113,31 @@ search the workspace when the evidence points outside this screen.
 ```
 {tree_large}
 ```
+
+## Elements with no authored name
+
+A static sweep of the source found these elements carrying an identifier but no
+`.accessibilityLabel` and no visible title, so whatever VoiceOver announces for
+them is derived rather than written:
+
+{unnamed}
+
+Rule on every one of them. Some are legitimate — a decorative image should have
+no name, and a container that only groups other elements does not need one. Say
+so and move on. But an interactive control in this list is a defect even when
+the derived name happens to sound reasonable: `xmark` announces as "Close",
+which reads fine for a dismiss button and is still nobody's decision. Judge
+whether the name was authored, not whether it sounds plausible.
+
+## Composite elements whose grouping is not stated
+
+These render several pieces of text but say nothing about how they group, so
+VoiceOver announces them as separate fragments unless that is intended:
+
+{ungrouped}
+
+Rule on these as well, as a question about grouping — separate from whether they
+are named. An element can be correctly unnamed and still wrongly fragmented.
 
 Read whatever source you need, then report every accessibility defect you can
 support with this evidence.
@@ -230,12 +256,16 @@ def unaddressed_findings(
     not. No ground truth is involved: this compares the agent's own findings
     against its own edits.
     """
-    declined = {s.get("anchor") for s in applied.get("skipped", [])}
     pending = []
 
     for finding in findings:
         anchor = finding.get("anchor")
-        if not anchor or anchor in declined or finding.get("mechanical") is False:
+        # A skip does not excuse a mechanical finding. Two defects can share an
+        # element — a row can be both fragmented and low-contrast — and honouring
+        # a skip by anchor let a report-only concern silently retire the
+        # mechanical one next to it. Only what the auditor marked as a design
+        # judgement may be declined.
+        if not anchor or finding.get("mechanical") is False:
             continue
 
         path = finding.get("file") or ""
@@ -300,6 +330,7 @@ class Glossary:
 
 
 async def audit_screen(screen: Screen, large: Screen | None, workspace: Path) -> tuple[list[dict], float, float]:
+    sweep = sweep_workspace(workspace)
     result = await run_agent(
         name=f"agent-audit-{screen.name}",
         system_prompt=AUDITOR_SYSTEM,
@@ -310,6 +341,8 @@ async def audit_screen(screen: Screen, large: Screen | None, workspace: Path) ->
             tree=screen.tree,
             issues_large=large.issue_summary() if large else "(not captured)",
             tree_large=large.tree if large else "(not captured)",
+            unnamed=render_sweep(sweep, "unnamed"),
+            ungrouped=render_sweep(sweep, "ungrouped"),
         ),
         allowed_tools=["Read", "Grep", "Glob"],
         cwd=workspace,

@@ -4,8 +4,8 @@
       {
         "anchor": "screen.addExpense",
         "file": "Ledgerly/AddExpenseView.swift",
-        "why": "Section(\"New expense\") header still carries no explicit foreground colour; it renders with the platform default secondary/grey header tint that the audit flagged as failing 4.5:1 against the grouped-form fill. Fixer skipped it as a design decision \u2014 accurate, but the defect stands.",
-        "fix": "Choose a palette value meeting 4.5:1 against the grouped-background fill and apply it to the header, e.g. Section { ... } header: { Text(\"New expense\").foregroundStyle(Color(\"HeaderText\")) }, then re-run the contrast check."
+        "why": "No colour change in source \u2014 Section(\"New expense\") header still uses the default form-header foreground, so contrast failure stands. Fixer skipped it as non-mechanical, which is honest, but the defect is still live.",
+        "fix": "Set an explicit header foreground meeting 4.5:1 against grouped-form background in light and dark, e.g. Section(header: Text(\"New expense\").foregroundStyle(Color(\"FormHeader\"))) with an asset-catalog colour tuned per appearance."
       }
     ],
     "regressions": [],
@@ -13,6 +13,7 @@
       "add.title",
       "add.amount",
       "add.save",
+      "add.cancel",
       "add.date"
     ]
   },
@@ -21,14 +22,14 @@
       {
         "anchor": "screen.expenseDetail",
         "file": "Ledgerly/ExpenseDetailView.swift",
-        "why": "Section(\"Details\") header at line 9 is unchanged \u2014 no foreground style applied. Contrast failure from the pre-repair Apple audit stands.",
-        "fix": "Apply a header foreground colour meeting 4.5:1 against the grouped-background fill, e.g. Section { ... } header: { Text(\"Details\").foregroundStyle(.primary) }."
+        "why": "Contrast failure on the \"Details\" section header is untouched \u2014 line 9 is still a bare Section(\"Details\") with no foreground/background colour change anywhere in the file. Fixer correctly declared it skipped (mechanical: false), but the defect stands.",
+        "fix": "Design picks a header foreground/background pair reaching >=4.5:1, then apply it to the Section header (e.g. .foregroundStyle(...) on a custom header label or a listRowBackground/tint change)."
       },
       {
         "anchor": "screen.expenseDetail",
         "file": "Ledgerly/ExpenseDetailView.swift",
-        "why": "Note row still LabeledContent(\"Note\", value: expense.note) at line 15, identical to the other rows. No text style change, no reflow allowance. Dynamic Type finding stands.",
-        "fix": "Replace the Note row with an explicitly scalable layout (e.g. VStack of Text with .font(.body) and .fixedSize(horizontal: false, vertical: true)) so the cell grows at accessibility sizes."
+        "why": "Note row Dynamic Type scaling is untouched \u2014 line 15 is still LabeledContent(\"Note\", value: expense.note) with no scalable text style or row-height allowance; the 52pt fixed cell height from the audit is unchanged.",
+        "fix": "Design picks the replacement text style; then apply a scalable style (e.g. .font(.body) with .dynamicTypeSize range removed) and let the row grow (.fixedSize(horizontal: false, vertical: true) / remove height constraints)."
       }
     ],
     "regressions": [],
@@ -42,15 +43,14 @@
       {
         "anchor": "row.container",
         "file": "Ledgerly/ExpenseListView.swift",
-        "why": "Contrast untouched. Line 58 still `.foregroundStyle(.secondary)` on the category caption, and the Section header Text (line 16-17) carries no explicit colour, so it keeps the default secondary header tone. Fixer skipped it as non-mechanical \u2014 accurate, but the defect stands.",
-        "fix": "Designer picks a tone meeting 4.5:1; replace `.foregroundStyle(.secondary)` with that colour and set it on the header Text too."
+        "why": "Contrast finding untouched. Line 58 still `.foregroundStyle(.secondary)` on the `.caption` category text; section header Text (line 16) carries no explicit foreground either, so it keeps the default secondary header treatment. Both contrast entries from the audit still stand. Fixer skipped deliberately (mechanical:false), but defect is live in code.",
+        "fix": "Replace `.foregroundStyle(.secondary)` on the category caption with a colour asset measured at >=4.5:1 against the list background in both light and dark mode; same for the section header Text."
       }
     ],
     "regressions": [],
     "confirmed": [
       "expenses.add",
       "row.icon",
-      "expense.row.0",
       "screen.expenseList"
     ]
   },
@@ -59,14 +59,14 @@
       {
         "anchor": "settings.currency",
         "file": "Ledgerly/SettingsView.swift",
-        "why": "Untouched. Line 14 still `.foregroundStyle(Color(white: 0.72))` on the Currency picker \u2014 same sub-4.5:1 grey the audit flagged. Fixer skipped it as a design decision, so the defect stands.",
-        "fix": "Drop the hardcoded grey; use `.primary`/`.secondary`, or a tone measured at >=4.5:1 in both light and dark mode."
+        "why": "Not touched. Line 14 still has .foregroundStyle(Color(white: 0.72)) on the Picker, so the 'USD' text still fails contrast. Fixer skipped it deliberately (mechanical: false), but the defect stands in the shipped code.",
+        "fix": "Remove the hard-coded Color(white: 0.72) so the Picker uses the semantic foreground colour, or substitute a designer-approved tone clearing 4.5:1 on the grouped-Form background."
       },
       {
-        "anchor": "About",
+        "anchor": "screen.settings",
         "file": "Ledgerly/SettingsView.swift",
-        "why": "Untouched. `Section(\"About\")` still uses the default header style \u2014 no scalable text style, no header foreground colour change. Dynamic Type partial-support and near-floor contrast on 'General'/'About' headers unchanged.",
-        "fix": "Give section headers an explicit scalable text style and a foreground colour clearing 4.5:1."
+        "why": "Not touched. Section(\"General\") and Section(\"About\") headers still use default styling; the near-miss contrast reported by the audit is unchanged.",
+        "fix": "Raise section-header foreground contrast against the grouped-Form background with a designer-signed-off tone."
       }
     ],
     "regressions": [],
@@ -80,28 +80,14 @@
     ]
   },
   "stats": {
-    "unresolved": [
-      {
-        "anchor": "stats.bar",
-        "file": "Ledgerly/StatsView.swift",
-        "why": "Second stats.bar finding (fixed 72pt category-label frame) not addressed \u2014 line 63 still `Text(category.rawValue).font(.caption).frame(width: 72, alignment: .leading)`. Truncates/clips at accessibility text sizes. Fixer correctly declared this skipped (mechanical: false), so it is an honest gap, not a false claim \u2014 but the defect stands in code.",
-        "fix": "Use `@ScaledMetric private var labelWidth: CGFloat = 72` and `.frame(minWidth: labelWidth, alignment: .leading)`, or switch the row to a layout that lets the label wrap at AX sizes."
-      },
-      {
-        "anchor": "stats.bar",
-        "file": "Ledgerly/StatsView.swift",
-        "why": "Label/value split is present (lines 75-76) but `.accessibilityIdentifier(\"stats.bar\")` sits at line 73, BEFORE `.accessibilityElement(children: .combine)` at line 74. Same ordering that produced the pre-repair tree, where the combined row element carried identifier 'stats.chart' (inherited from the ancestor VStack at line 79) and 'stats.bar' landed on the now-merged leaf StaticTexts. After combine those leaves are no longer separate elements, so the anchor 'stats.bar' has no element to attach to and the fixed row is addressable only as 'stats.chart'. The fixer got this ordering right for stats.largest.row (identifier last, line 40) but not here.",
-        "fix": "Move `.accessibilityIdentifier(\"stats.bar\")` to after `.accessibilityValue(...)`, so the order is `.accessibilityElement(children: .combine).accessibilityLabel(...).accessibilityValue(...).accessibilityIdentifier(\"stats.bar\")` \u2014 matching the largest-row pattern."
-      }
-    ],
+    "unresolved": [],
     "regressions": [],
     "confirmed": [
-      "stats.largest.row",
-      "card.action",
       "stats.total",
+      "card.action",
+      "stats.largest.row",
       "stats.header.categories",
-      "stats.header.largest",
-      "card.container"
+      "stats.header.largest"
     ]
   }
 }

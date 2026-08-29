@@ -1,15 +1,15 @@
 {
-  "arm": "agent",
-  "verified_fix_rate": 0.9090909090909091,
-  "fixes_verified": 20,
+  "arm": "baseline-source_only",
+  "verified_fix_rate": 0.8636363636363636,
+  "fixes_verified": 19,
   "mechanical_total": 22,
-  "detection_rate": 0.9565217391304348,
-  "detected": 22,
+  "detection_rate": 0.9130434782608695,
+  "detected": 21,
   "cases_total": 23,
   "false_positives": 5,
   "pre_existing_reported": 0,
-  "duration_seconds": 716.5186973339878,
-  "cost_usd": 9.1121505,
+  "duration_seconds": 136.2886267080321,
+  "cost_usd": 1.518004,
   "outcomes": [
     {
       "id": "S01",
@@ -35,8 +35,8 @@
       "violation_class": "fragmented_element",
       "fixable": true,
       "detected": true,
-      "fix_verified": false,
-      "reason": ".accessibilityElement not attached to 'row.container'"
+      "fix_verified": true,
+      "reason": ".accessibilityElement(children: .ignore) attached to 'row.container'"
     },
     {
       "id": "S04",
@@ -54,16 +54,16 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "visible title 'Flag expense' names 'detail.flag'"
+      "reason": "visible title 'Flagged' names 'detail.flag'"
     },
     {
       "id": "S06",
       "screen": "expenseDetail",
       "violation_class": "false_positive_trap",
       "fixable": true,
-      "detected": false,
-      "fix_verified": true,
-      "reason": "'detail.duplicate' correctly left unchanged"
+      "detected": true,
+      "fix_verified": false,
+      "reason": "'detail.duplicate' was modified (.frame(width: 24, height: 24) is gone); the running app showed nothing needed fixing here"
     },
     {
       "id": "S07",
@@ -81,7 +81,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "explicit accessibilityLabel(\"Save expense\") on 'add.save'"
+      "reason": "explicit accessibilityLabel(\"Save\") on 'add.save'"
     },
     {
       "id": "S09",
@@ -90,7 +90,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "visible title 'Title' names 'add.title'"
+      "reason": "explicit accessibilityLabel(\"Title\") on 'add.title'"
     },
     {
       "id": "S10",
@@ -99,7 +99,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "visible title 'Amount' names 'add.amount'"
+      "reason": "explicit accessibilityLabel(\"Amount\") on 'add.amount'"
     },
     {
       "id": "R01",
@@ -142,9 +142,9 @@
       "screen": "stats",
       "violation_class": "semantic_value_loss",
       "fixable": true,
-      "detected": false,
-      "fix_verified": false,
-      "reason": ".accessibilityLabel not attached to 'stats.bar'; .accessibilityValue not attached to 'stats.bar'"
+      "detected": true,
+      "fix_verified": true,
+      "reason": ".accessibilityLabel(category.rawValue) attached to 'stats.bar'; .accessibilityValue(total.formatted(.currency(code: \"USD\") attached to 'stats.bar'"
     },
     {
       "id": "S15",
@@ -171,7 +171,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "explicit accessibilityLabel(\"Privacy policy\") on 'settings.privacy'"
+      "reason": "explicit accessibilityLabel(\"Privacy Policy\") on 'settings.privacy'"
     },
     {
       "id": "S18",
@@ -180,7 +180,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": ".accessibilityElement(children: .ignore) attached to 'settings.version'"
+      "reason": ".accessibilityElement(children: .combine) attached to 'settings.version'"
     },
     {
       "id": "R02",
@@ -196,18 +196,18 @@
       "screen": "stats",
       "violation_class": "ancestor_swallow",
       "fixable": true,
-      "detected": true,
-      "fix_verified": true,
-      "reason": ".accessibilityElement(children: .contain) on 'card.container'"
+      "detected": false,
+      "fix_verified": false,
+      "reason": ".accessibilityElement(children: .ignore) on 'card.container' still uses .ignore"
     },
     {
       "id": "H02",
       "screen": "stats",
       "violation_class": "hit_region",
       "fixable": true,
-      "detected": true,
-      "fix_verified": true,
-      "reason": ".contentShape(Rectangle() attached to 'card.action'"
+      "detected": false,
+      "fix_verified": false,
+      "reason": ".contentShape not attached to 'card.action'"
     },
     {
       "id": "H03",
@@ -228,6 +228,6 @@
       "reason": "no .fixedSize on 'settings.limit.title'"
     }
   ],
-  "traps_avoided": 1,
+  "traps_avoided": 0,
   "traps_total": 1
 }

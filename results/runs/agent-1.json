@@ -1,15 +1,15 @@
 {
   "arm": "agent",
-  "verified_fix_rate": 0.9090909090909091,
-  "fixes_verified": 20,
+  "verified_fix_rate": 0.9545454545454546,
+  "fixes_verified": 21,
   "mechanical_total": 22,
-  "detection_rate": 0.9565217391304348,
-  "detected": 22,
+  "detection_rate": 1.0,
+  "detected": 23,
   "cases_total": 23,
-  "false_positives": 5,
+  "false_positives": 4,
   "pre_existing_reported": 0,
-  "duration_seconds": 716.5186973339878,
-  "cost_usd": 9.1121505,
+  "duration_seconds": 814.6552556250826,
+  "cost_usd": 9.939683500000001,
   "outcomes": [
     {
       "id": "S01",
@@ -81,7 +81,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "explicit accessibilityLabel(\"Save expense\") on 'add.save'"
+      "reason": "explicit accessibilityLabel(\"Save\") on 'add.save'"
     },
     {
       "id": "S09",
@@ -135,16 +135,16 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": ".accessibilityElement(children: .ignore) attached to 'stats.largest.row'"
+      "reason": ".accessibilityElement(children: .combine) attached to 'stats.largest.row'"
     },
     {
       "id": "S14",
       "screen": "stats",
       "violation_class": "semantic_value_loss",
       "fixable": true,
-      "detected": false,
-      "fix_verified": false,
-      "reason": ".accessibilityLabel not attached to 'stats.bar'; .accessibilityValue not attached to 'stats.bar'"
+      "detected": true,
+      "fix_verified": true,
+      "reason": ".accessibilityLabel(category.rawValue) attached to 'stats.bar'; .accessibilityValue(total.formatted(.currency(code: \"USD\") attached to 'stats.bar'"
     },
     {
       "id": "S15",
@@ -171,7 +171,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "explicit accessibilityLabel(\"Privacy policy\") on 'settings.privacy'"
+      "reason": "explicit accessibilityLabel(\"Privacy Policy\") on 'settings.privacy'"
     },
     {
       "id": "S18",

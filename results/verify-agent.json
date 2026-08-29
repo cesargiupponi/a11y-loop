@@ -13,8 +13,8 @@
     },
     {
       "id": "S03",
-      "passed": true,
-      "reason": ".accessibilityElement(children: .combine) attached to 'row.container'"
+      "passed": false,
+      "reason": ".accessibilityElement not attached to 'row.container'"
     },
     {
       "id": "S04",
@@ -24,7 +24,7 @@
     {
       "id": "S05",
       "passed": true,
-      "reason": "explicit accessibilityLabel(\"Flag expense\") on 'detail.flag'"
+      "reason": "visible title 'Flag expense' names 'detail.flag'"
     },
     {
       "id": "S06",
@@ -33,8 +33,8 @@
     },
     {
       "id": "S07",
-      "passed": false,
-      "reason": "'add.cancel' exposes no accessible name (no label, no visible title)"
+      "passed": true,
+      "reason": "explicit accessibilityLabel(\"Cancel\") on 'add.cancel'"
     },
     {
       "id": "S08",
@@ -69,12 +69,12 @@
     {
       "id": "S13",
       "passed": true,
-      "reason": ".accessibilityElement(children: .combine) attached to 'stats.largest.row'"
+      "reason": ".accessibilityElement(children: .ignore) attached to 'stats.largest.row'"
     },
     {
       "id": "S14",
-      "passed": true,
-      "reason": ".accessibilityLabel(category.rawValue) attached to 'stats.bar'; .accessibilityValue(total.formatted(.currency(code: \"USD\") attached to 'stats.bar'"
+      "passed": false,
+      "reason": ".accessibilityLabel not attached to 'stats.bar'; .accessibilityValue not attached to 'stats.bar'"
     },
     {
       "id": "S15",
@@ -94,7 +94,7 @@
     {
       "id": "S18",
       "passed": true,
-      "reason": ".accessibilityElement(children: .combine) attached to 'settings.version'"
+      "reason": ".accessibilityElement(children: .ignore) attached to 'settings.version'"
     },
     {
       "id": "R02",
@@ -122,13 +122,13 @@
       "reason": "no .fixedSize on 'settings.limit.title'"
     }
   ],
-  "passed": 21,
+  "passed": 20,
   "simulator": {
     "arm": "agent",
     "builds": true,
     "ui_tests_pass": true,
-    "audit_issues_resolved": 14,
-    "regressions": 8,
+    "audit_issues_resolved": 11,
+    "regressions": 0,
     "pre_existing_resurfaced": 3,
     "per_screen": {
       "addExpense": {
@@ -169,29 +169,16 @@
       },
       "expenseList": {
         "issues_before": 2,
-        "issues_after": 6,
-        "resolved": [
-          "Contrast nearly passed"
-        ],
-        "regressions": [
-          "Contrast nearly passed",
-          "Contrast nearly passed",
-          "Contrast nearly passed",
-          "Contrast nearly passed",
-          "Contrast nearly passed"
-        ],
+        "issues_after": 2,
+        "resolved": [],
+        "regressions": [],
         "pre_existing_resurfaced": []
       },
       "expenseList@axxl": {
         "issues_before": 1,
-        "issues_after": 2,
-        "resolved": [
-          "Contrast failed"
-        ],
-        "regressions": [
-          "Contrast failed",
-          "Contrast failed"
-        ],
+        "issues_after": 1,
+        "resolved": [],
+        "regressions": [],
         "pre_existing_resurfaced": []
       },
       "settings": {
@@ -209,12 +196,8 @@
       "settings@axxl": {
         "issues_before": 1,
         "issues_after": 1,
-        "resolved": [
-          "Contrast failed"
-        ],
-        "regressions": [
-          "Contrast failed"
-        ],
+        "resolved": [],
+        "regressions": [],
         "pre_existing_resurfaced": []
       },
       "stats": {

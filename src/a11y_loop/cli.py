@@ -40,6 +40,14 @@ def main(argv: list[str] | None = None) -> int:
     p_eval = sub.add_parser("eval", help="Run baseline + agent on the corpus, score against ground truth.")
     p_eval.add_argument("--only", choices=["baseline", "agent"], default=None, help="Run a single arm.")
     p_eval.add_argument(
+        "--repeat",
+        type=int,
+        default=1,
+        metavar="N",
+        help="Run each arm N times and report a mean and range. A single run is not a result: "
+             "the failing case moves between runs while the total barely does.",
+    )
+    p_eval.add_argument(
         "--baseline-mode",
         choices=["source_only", "curated"],
         default="source_only",
@@ -69,7 +77,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "eval":
         from a11y_loop.evaluate import run_eval
 
-        return run_eval(only=args.only, baseline_mode=args.baseline_mode)
+        return run_eval(only=args.only, baseline_mode=args.baseline_mode, repeat=args.repeat)
     if args.command == "report":
         from a11y_loop.report import run_report
 

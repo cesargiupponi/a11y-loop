@@ -39,6 +39,26 @@ def run_report() -> int:
           f"({gt['totals']['mechanical']} mechanical, {gt['totals']['report_only']} report-only) "
           f"across {gt['totals']['screens']} screens\n")
 
+    variance_path = results_dir() / "variance.json"
+    if variance_path.exists():
+        variance = json.loads(variance_path.read_text())
+        runs = max(d["runs"] for d in variance.values())
+        print(f"Across {runs} runs of each arm — this is the headline, not any single run:\n")
+        width = max(len(a) for a in variance)
+        print(f"{'Arm':{width}}  {'Mean':>12}  {'Rate':>6}  {'Range':>7}  {'Cost':>8}")
+        print("-" * (width + 40))
+        for arm, data in variance.items():
+            spread = f"{data['min']}" if data["min"] == data["max"] else f"{data['min']}-{data['max']}"
+            print(
+                f"{arm:{width}}  {data['mean']:>6.1f}/{data['mechanical_total']:<5}  "
+                f"{data['mean_rate']:>5.0%}  {spread:>7}  ${data['cost_usd_mean']:>6.2f}"
+            )
+        print("\nCases failed, per run — the total holds while the membership moves:")
+        for arm, data in variance.items():
+            for index, failed in enumerate(data["failed_cases"], start=1):
+                print(f"  {arm:{width}} run {index}: {', '.join(failed) if failed else 'none'}")
+        print()
+
     if baseline and agent:
         rows = [
             (
@@ -48,7 +68,7 @@ def run_report() -> int:
                 _delta(baseline["verified_fix_rate"] * 100, agent["verified_fix_rate"] * 100, "pp"),
             ),
             (
-                "Violations detected",
+                "Elements flagged (anchor-level)",
                 f"{baseline['detected']}/{baseline['cases_total']}",
                 f"{agent['detected']}/{agent['cases_total']}",
                 _delta(baseline["detected"], agent["detected"]),
@@ -95,18 +115,22 @@ def run_report() -> int:
         print(f"  verified-fix {only['fixes_verified']}/{only['mechanical_total']} "
               f"({only['verified_fix_rate']:.0%})")
 
-    for arm in ("baseline-source_only", "agent"):
-        verify_path = results_dir() / f"verify-{arm.replace('baseline-source_only', 'baseline-source_only')}.json"
-        if verify_path.exists():
-            data = json.loads(verify_path.read_text())
-            sim = data.get("simulator")
-            if sim and sim.get("builds"):
-                print(
-                    f"\nSimulator verification ({arm}): builds={sim['builds']} "
-                    f"ui_tests_pass={sim.get('ui_tests_pass')} "
-                    f"audit issues resolved={sim.get('audit_issues_resolved')} "
-                    f"introduced={sim.get('audit_issues_introduced')}"
-                )
+    verified = [
+        (arm, json.loads(path.read_text()).get("simulator"))
+        for arm in ("baseline-source_only", "agent")
+        if (path := results_dir() / f"verify-{arm}.json").exists()
+    ]
+    if any(sim for _, sim in verified):
+        print("\nVerification on the rebuilt app (macOS):")
+        print(f"{'arm':22} {'builds':>7} {'tests':>6} {'resolved':>9} {'regressions':>12} {'resurfaced':>11}")
+        for arm, sim in verified:
+            if not sim:
+                continue
+            print(
+                f"{arm:22} {str(sim.get('builds')):>7} {str(sim.get('ui_tests_pass')):>6} "
+                f"{sim.get('audit_issues_resolved', 0):>9} {sim.get('regressions', 0):>12} "
+                f"{sim.get('pre_existing_resurfaced', 0):>11}"
+            )
 
     print(f"\nRaw results: {results_dir().relative_to(repo_root())}/")
     return 0
