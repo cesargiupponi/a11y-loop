@@ -1,15 +1,15 @@
 {
   "arm": "baseline-source_only",
-  "verified_fix_rate": 1.0,
-  "fixes_verified": 18,
-  "mechanical_total": 18,
-  "detection_rate": 1.0,
-  "detected": 20,
-  "cases_total": 20,
-  "false_positives": 3,
+  "verified_fix_rate": 0.9090909090909091,
+  "fixes_verified": 20,
+  "mechanical_total": 22,
+  "detection_rate": 0.9166666666666666,
+  "detected": 22,
+  "cases_total": 24,
+  "false_positives": 5,
   "pre_existing_reported": 0,
-  "duration_seconds": 134.1787893329747,
-  "cost_usd": 1.4107349999999999,
+  "duration_seconds": 140.5183682909992,
+  "cost_usd": 1.42564,
   "outcomes": [
     {
       "id": "S01",
@@ -18,7 +18,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "explicit accessibilityLabel(\"Add Expense\") on 'expenses.add'"
+      "reason": "explicit accessibilityLabel(\"Add expense\") on 'expenses.add'"
     },
     {
       "id": "S02",
@@ -54,7 +54,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "visible title 'Flagged' names 'detail.flag'"
+      "reason": "explicit accessibilityLabel(\"Flagged\") on 'detail.flag'"
     },
     {
       "id": "S06",
@@ -135,7 +135,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": ".accessibilityElement(children: .ignore) attached to 'stats.largest.row'"
+      "reason": ".accessibilityElement(children: .combine) attached to 'stats.largest.row'"
     },
     {
       "id": "S14",
@@ -162,7 +162,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "visible title 'Round Up Purchases' names 'settings.roundup'"
+      "reason": "visible title 'Round up purchases' names 'settings.roundup'"
     },
     {
       "id": "S17",
@@ -171,7 +171,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": "explicit accessibilityLabel(\"Privacy Policy\") on 'settings.privacy'"
+      "reason": "explicit accessibilityLabel(\"Privacy policy\") on 'settings.privacy'"
     },
     {
       "id": "S18",
@@ -180,7 +180,7 @@
       "fixable": true,
       "detected": true,
       "fix_verified": true,
-      "reason": ".accessibilityElement(children: .ignore) attached to 'settings.version'"
+      "reason": ".accessibilityElement(children: .combine) attached to 'settings.version'"
     },
     {
       "id": "R02",
@@ -190,6 +190,42 @@
       "detected": true,
       "fix_verified": false,
       "reason": "report-only: no fix expected"
+    },
+    {
+      "id": "H01",
+      "screen": "stats",
+      "violation_class": "ancestor_swallow",
+      "fixable": true,
+      "detected": false,
+      "fix_verified": false,
+      "reason": ".accessibilityElement(children: .ignore) on 'card.container' still uses .ignore"
+    },
+    {
+      "id": "H02",
+      "screen": "stats",
+      "violation_class": "hit_region",
+      "fixable": true,
+      "detected": false,
+      "fix_verified": false,
+      "reason": ".contentShape not attached to 'card.action'"
+    },
+    {
+      "id": "H03",
+      "screen": "stats",
+      "violation_class": "dynamic_type_clipping",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "no .fixedSize on 'stats.total'"
+    },
+    {
+      "id": "H04",
+      "screen": "settings",
+      "violation_class": "dynamic_type_clipping",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "no .fixedSize on 'settings.limit.title'"
     }
   ]
 }

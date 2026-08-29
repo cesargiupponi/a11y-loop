@@ -162,6 +162,29 @@ def run_check(check: dict, source: str) -> CheckResult:
         return check_modifier_present(source, check["anchor"], check["modifier"])
     if kind == "accessible_name":
         return check_accessible_name(source, check["anchor"])
+    if kind == "modifier_argument_excludes":
+        chain = modifier_chain(source, check["anchor"])
+        if not chain:
+            return CheckResult(False, f"anchor {check['anchor']!r} not found in source")
+        argument = _modifier_argument(chain, check["modifier"])
+        if argument is None:
+            return CheckResult(False, f".{check['modifier']} not attached to {check['anchor']!r}")
+        for forbidden in check["forbidden"]:
+            if forbidden in argument:
+                return CheckResult(
+                    False,
+                    f".{check['modifier']}({argument.strip()}) on {check['anchor']!r} still uses {forbidden}",
+                )
+        return CheckResult(True, f".{check['modifier']}({argument.strip()}) on {check['anchor']!r}")
+    if kind == "no_modifier":
+        chain = modifier_chain(source, check["anchor"])
+        if not chain:
+            return CheckResult(False, f"anchor {check['anchor']!r} not found in source")
+        if _modifier_argument(chain, check["modifier"]) is not None:
+            return CheckResult(
+                False, f".{check['modifier']} still constrains {check['anchor']!r}"
+            )
+        return CheckResult(True, f"no .{check['modifier']} on {check['anchor']!r}")
     if kind == "min_touch_target":
         return check_min_touch_target(source, check["anchor"], check["minimum"])
     if kind == "all":

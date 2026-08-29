@@ -11,6 +11,7 @@
 		37499986F122BC64CE3A8C58 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDEEF15E27DB83D45F19BE51 /* Models.swift */; };
 		6680694FCAF232621DCCBD5A /* A11yCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27CCA7E775B5AEEDC7D599E8 /* A11yCaptureTests.swift */; };
 		73CD3500017B09551CADA556 /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B194A568BC958BA9427CAEF /* StatsView.swift */; };
+		7E56FF8C6C2B33484B5C9274 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5954DC0BB86D0993E40103A /* Components.swift */; };
 		7F90239BDFB643136B144E1D /* ExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C140F5EDFD3AC955DAA0394D /* ExpenseDetailView.swift */; };
 		85243F606AF4070693F950D1 /* LedgerlyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C42285F60A69C2A53C0989 /* LedgerlyApp.swift */; };
 		CFA32434CAD114AAF8E88DD8 /* AddExpenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0860986B888C74BACF025CF5 /* AddExpenseView.swift */; };
@@ -37,6 +38,7 @@
 		C140F5EDFD3AC955DAA0394D /* ExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailView.swift; sourceTree = "<group>"; };
 		E0C42285F60A69C2A53C0989 /* LedgerlyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerlyApp.swift; sourceTree = "<group>"; };
 		EDEEF15E27DB83D45F19BE51 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		F5954DC0BB86D0993E40103A /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		F6773294291C9F0179902676 /* Ledgerly.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Ledgerly.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -71,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				0860986B888C74BACF025CF5 /* AddExpenseView.swift */,
+				F5954DC0BB86D0993E40103A /* Components.swift */,
 				C140F5EDFD3AC955DAA0394D /* ExpenseDetailView.swift */,
 				A46A424CB70F871B1D1A549D /* ExpenseListView.swift */,
 				E0C42285F60A69C2A53C0989 /* LedgerlyApp.swift */,
@@ -159,6 +162,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CFA32434CAD114AAF8E88DD8 /* AddExpenseView.swift in Sources */,
+				7E56FF8C6C2B33484B5C9274 /* Components.swift in Sources */,
 				7F90239BDFB643136B144E1D /* ExpenseDetailView.swift in Sources */,
 				D79A3B00655F62A65F993AF5 /* ExpenseListView.swift in Sources */,
 				85243F606AF4070693F950D1 /* LedgerlyApp.swift in Sources */,

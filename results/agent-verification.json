@@ -1,0 +1,103 @@
+{
+  "addExpense": {
+    "unresolved": [
+      {
+        "anchor": "screen.addExpense",
+        "file": "Ledgerly/AddExpenseView.swift",
+        "why": "Section header contrast untouched \u2014 Section(\"New expense\") still carries no explicit foreground treatment, so the failing low-contrast default remains. Fixer skipped it as non-mechanical, which is a legitimate call, but the defect is still live in the shipped code.",
+        "fix": "Design decision required: replace the string header with an explicit view, e.g. Section { ... } header: { Text(\"New expense\").foregroundStyle(.primary) }, or a custom colour measured to 4.5:1 against the grouped-form background."
+      }
+    ],
+    "regressions": [],
+    "confirmed": [
+      "add.title",
+      "add.amount",
+      "add.save",
+      "add.cancel",
+      "add.date"
+    ]
+  },
+  "expenseDetail": {
+    "unresolved": [
+      {
+        "anchor": "screen.expenseDetail",
+        "file": "Ledgerly/ExpenseDetailView.swift",
+        "why": "Section(\"Details\") header still has no foreground style \u2014 line 9 is unchanged. Contrast failure stands; fixer skipped it as a design call.",
+        "fix": "Apply an accessible header colour, e.g. Section { ... } header: { Text(\"Details\").foregroundStyle(.primary) } \u2014 verify \u22654.5:1 against form background."
+      },
+      {
+        "anchor": "screen.expenseDetail",
+        "file": "Ledgerly/ExpenseDetailView.swift",
+        "why": "Note row (line 15) still LabeledContent(\"Note\", value: expense.note) with no text-style or wrapping change. Dynamic Type clipping stands; fixer skipped it as a design call.",
+        "fix": "LabeledContent(\"Note\") { Text(expense.note).font(.body).lineLimit(nil) } \u2014 no fixed height/size, let row wrap at accessibility sizes."
+      }
+    ],
+    "regressions": [],
+    "confirmed": [
+      "detail.delete",
+      "detail.flag"
+    ]
+  },
+  "expenseList": {
+    "unresolved": [
+      {
+        "anchor": "screen.expenseList",
+        "file": "Ledgerly/ExpenseListView.swift",
+        "why": "No colour change applied. Line 54-55 still .font(.caption).foregroundStyle(.secondary) for the category caption, and the 'This month' Section header is unchanged. All 8 'Contrast nearly passed' hits remain. Skipping was declared, but the defect stands.",
+        "fix": "Design review: darken caption/section-header colour (or lighten list background) to reach 4.5:1 at default text size; re-run the audit to confirm the 8 contrast hits clear."
+      }
+    ],
+    "regressions": [],
+    "confirmed": [
+      "expenses.add",
+      "row.container"
+    ]
+  },
+  "settings": {
+    "unresolved": [
+      {
+        "anchor": "settings.currency",
+        "file": "Ledgerly/SettingsView.swift",
+        "why": "Untouched. Line 14 still `.foregroundStyle(Color(white: 0.72))` on the Currency Picker. Fixer skipped it as a design call \u2014 legitimate, but contrast defect still live in code.",
+        "fix": "Drop the custom foregroundStyle (system label colour) or pick a tone meeting 4.5:1 against the form background."
+      },
+      {
+        "anchor": "screen.settings",
+        "file": "Ledgerly/SettingsView.swift",
+        "why": "Untouched. `Section(\"General\")` line 10 and `Section(\"About\")` line 33 still use default header styling \u2014 no contrast or Dynamic Type change applied.",
+        "fix": "Higher-contrast header colour plus a fully scalable text style for section headers."
+      }
+    ],
+    "regressions": [],
+    "confirmed": [
+      "settings.notifications",
+      "settings.roundup",
+      "settings.privacy",
+      "card.container",
+      "settings.version",
+      "settings.limit.title"
+    ]
+  },
+  "stats": {
+    "unresolved": [],
+    "regressions": [
+      {
+        "anchor": "stats.chart",
+        "file": "Ledgerly/StatsView.swift",
+        "what_broke": "Chart container label \"Spending by category\" (line 81) duplicates the existing stats.header.categories Text (line 7). VoiceOver now announces \"Spending by category\" twice in a row \u2014 the same double-announcement defect that finding #4 fixed on the Card. Either drop the header Text, hide it, or label the container something distinct like \"Category spending chart\"."
+      },
+      {
+        "anchor": "card.container",
+        "file": "Ledgerly/Components.swift",
+        "what_broke": "IconButton identifier changed from inherited card.container to card.action (line 43) \u2014 an unclaimed change. The pre-repair tree reported the share Button as identifier 'card.container'; any anchor/UI test targeting the tap-target finding by that identifier no longer resolves. Behaviour is otherwise fine (arguably better), but the change should be declared and downstream anchors updated."
+      }
+    ],
+    "confirmed": [
+      "card.container",
+      "stats.total",
+      "stats.largest.row",
+      "stats.bar",
+      "stats.chart"
+    ]
+  }
+}

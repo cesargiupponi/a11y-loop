@@ -1,0 +1,231 @@
+{
+  "arm": "agent",
+  "verified_fix_rate": 0.8181818181818182,
+  "fixes_verified": 18,
+  "mechanical_total": 22,
+  "detection_rate": 0.7916666666666666,
+  "detected": 19,
+  "cases_total": 24,
+  "false_positives": 6,
+  "pre_existing_reported": 0,
+  "duration_seconds": 952.7782514559804,
+  "cost_usd": 10.3219445,
+  "outcomes": [
+    {
+      "id": "S01",
+      "screen": "expenseList",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "explicit accessibilityLabel(\"Add expense\") on 'expenses.add'"
+    },
+    {
+      "id": "S02",
+      "screen": "expenseList",
+      "violation_class": "decorative_exposed",
+      "fixable": true,
+      "detected": false,
+      "fix_verified": true,
+      "reason": ".accessibilityHidden(true) attached to 'row.icon'"
+    },
+    {
+      "id": "S03",
+      "screen": "expenseList",
+      "violation_class": "fragmented_element",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": ".accessibilityElement(children: .combine) attached to 'row.container'"
+    },
+    {
+      "id": "S04",
+      "screen": "expenseDetail",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "explicit accessibilityLabel(\"Delete expense\") on 'detail.delete'"
+    },
+    {
+      "id": "S05",
+      "screen": "expenseDetail",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "explicit accessibilityLabel(\"Flag expense\") on 'detail.flag'"
+    },
+    {
+      "id": "S06",
+      "screen": "expenseDetail",
+      "violation_class": "hit_region",
+      "fixable": true,
+      "detected": false,
+      "fix_verified": false,
+      "reason": "'detail.duplicate' constrained to 24pt, below 44pt"
+    },
+    {
+      "id": "S07",
+      "screen": "addExpense",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "explicit accessibilityLabel(\"Cancel\") on 'add.cancel'"
+    },
+    {
+      "id": "S08",
+      "screen": "addExpense",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "explicit accessibilityLabel(\"Save\") on 'add.save'"
+    },
+    {
+      "id": "S09",
+      "screen": "addExpense",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "visible title 'Title' names 'add.title'"
+    },
+    {
+      "id": "S10",
+      "screen": "addExpense",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "visible title 'Amount' names 'add.amount'"
+    },
+    {
+      "id": "R01",
+      "screen": "addExpense",
+      "violation_class": "dynamic_type",
+      "fixable": false,
+      "detected": true,
+      "fix_verified": false,
+      "reason": "report-only: no fix expected"
+    },
+    {
+      "id": "S11",
+      "screen": "stats",
+      "violation_class": "missing_trait",
+      "fixable": true,
+      "detected": false,
+      "fix_verified": false,
+      "reason": ".accessibilityAddTraits not attached to 'stats.header.categories'"
+    },
+    {
+      "id": "S12",
+      "screen": "stats",
+      "violation_class": "missing_trait",
+      "fixable": true,
+      "detected": false,
+      "fix_verified": false,
+      "reason": ".accessibilityAddTraits not attached to 'stats.header.largest'"
+    },
+    {
+      "id": "S13",
+      "screen": "stats",
+      "violation_class": "fragmented_element",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": ".accessibilityElement(children: .ignore) attached to 'stats.largest.row'"
+    },
+    {
+      "id": "S14",
+      "screen": "stats",
+      "violation_class": "semantic_value_loss",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": ".accessibilityLabel(category.rawValue) attached to 'stats.bar'; .accessibilityValue(total.formatted(.currency(code: \"USD\") attached to 'stats.bar'"
+    },
+    {
+      "id": "S15",
+      "screen": "settings",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "visible title 'Notifications' names 'settings.notifications'"
+    },
+    {
+      "id": "S16",
+      "screen": "settings",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "visible title 'Round up purchases' names 'settings.roundup'"
+    },
+    {
+      "id": "S17",
+      "screen": "settings",
+      "violation_class": "missing_label",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "explicit accessibilityLabel(\"Privacy Policy\") on 'settings.privacy'"
+    },
+    {
+      "id": "S18",
+      "screen": "settings",
+      "violation_class": "fragmented_element",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": ".accessibilityElement(children: .combine) attached to 'settings.version'"
+    },
+    {
+      "id": "R02",
+      "screen": "settings",
+      "violation_class": "contrast",
+      "fixable": false,
+      "detected": true,
+      "fix_verified": false,
+      "reason": "report-only: no fix expected"
+    },
+    {
+      "id": "H01",
+      "screen": "stats",
+      "violation_class": "ancestor_swallow",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": ".accessibilityElement(children: .contain) on 'card.container'"
+    },
+    {
+      "id": "H02",
+      "screen": "stats",
+      "violation_class": "hit_region",
+      "fixable": true,
+      "detected": false,
+      "fix_verified": false,
+      "reason": "anchor 'card.action' not found in source"
+    },
+    {
+      "id": "H03",
+      "screen": "stats",
+      "violation_class": "dynamic_type_clipping",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "no .fixedSize on 'stats.total'"
+    },
+    {
+      "id": "H04",
+      "screen": "settings",
+      "violation_class": "dynamic_type_clipping",
+      "fixable": true,
+      "detected": true,
+      "fix_verified": true,
+      "reason": "no .fixedSize on 'settings.limit.title'"
+    }
+  ]
+}

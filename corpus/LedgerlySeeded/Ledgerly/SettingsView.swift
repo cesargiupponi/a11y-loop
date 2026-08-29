@@ -18,6 +18,20 @@ struct SettingsView: View {
                 Toggle("", isOn: $roundUp)
                     .accessibilityIdentifier("settings.roundup")
             }
+            Section {
+                Card(title: "Budget") {
+                    HStack {
+                        Text("Monthly limit")
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .accessibilityIdentifier("settings.limit.title")
+                        Spacer()
+                        Text("$2,000.00")
+                            .monospacedDigit()
+                            .accessibilityIdentifier("settings.limit.value")
+                    }
+                }
+            }
             Section("About") {
                 HStack { Text("Version"); Spacer(); Text("1.0.0") }
                     .accessibilityIdentifier("settings.version")

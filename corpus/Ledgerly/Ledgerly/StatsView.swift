@@ -9,6 +9,17 @@ struct StatsView: View {
                     .accessibilityIdentifier("stats.header.categories")
                     .accessibilityAddTraits(.isHeader)
 
+                Card(title: "This month") {
+                    HStack {
+                        Text(SampleData.expenses.reduce(0) { $0 + $1.amount }, format: .currency(code: "USD"))
+                            .font(.title3.monospacedDigit())
+                            .lineLimit(1)
+                            .accessibilityIdentifier("stats.total")
+                        Spacer()
+                        IconButton(symbol: "square.and.arrow.up", label: "Share summary") {}
+                    }
+                }
+
                 CategoryBarChart(totals: SampleData.totalsByCategory)
 
                 Text("Largest expenses")

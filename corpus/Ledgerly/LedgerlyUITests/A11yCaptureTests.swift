@@ -71,35 +71,52 @@ final class A11yCaptureTests: XCTestCase {
     }
 
     func testCaptureAllScreens() throws {
+        try captureWalkthrough(contentSize: nil, suffix: "")
+    }
+
+    /// Second pass at an accessibility text size. Clipping and truncation
+    /// defects do not exist at the default size and cannot be read off the
+    /// source — they only appear once the app is rendered this way.
+    func testCaptureAllScreensAtAccessibilitySize() throws {
+        try captureWalkthrough(
+            contentSize: "UICTContentSizeCategoryAccessibilityXXL",
+            suffix: "@axxl"
+        )
+    }
+
+    private func captureWalkthrough(contentSize: String?, suffix: String) throws {
         let app = XCUIApplication()
+        if let contentSize {
+            app.launchArguments += ["-UIPreferredContentSizeCategoryName", contentSize]
+        }
         app.launch()
         let appName = "Ledgerly"
 
         // 1. Expense list (default tab)
         XCTAssertTrue(app.navigationBars["Expenses"].waitForExistence(timeout: 10))
-        try captureScreen(app: app, appName: appName, screen: "expenseList")
+        try captureScreen(app: app, appName: appName, screen: "expenseList" + suffix)
 
         // 2. Expense detail — target the row by identifier; cells.firstMatch is
         // the section header ("This month"), which is not tappable.
         app.descendants(matching: .any)["expense.row.0"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Expense"].waitForExistence(timeout: 5))
-        try captureScreen(app: app, appName: appName, screen: "expenseDetail")
+        try captureScreen(app: app, appName: appName, screen: "expenseDetail" + suffix)
         app.navigationBars.buttons.firstMatch.tap() // back
 
         // 3. Add expense (sheet)
         app.buttons["expenses.add"].tap()
         XCTAssertTrue(app.navigationBars["Add expense"].waitForExistence(timeout: 5))
-        try captureScreen(app: app, appName: appName, screen: "addExpense")
+        try captureScreen(app: app, appName: appName, screen: "addExpense" + suffix)
         app.buttons["add.cancel"].tap()
 
         // 4. Stats tab
         app.tabBars.buttons.element(boundBy: 1).tap()
         XCTAssertTrue(app.navigationBars["Stats"].waitForExistence(timeout: 5))
-        try captureScreen(app: app, appName: appName, screen: "stats")
+        try captureScreen(app: app, appName: appName, screen: "stats" + suffix)
 
         // 5. Settings tab
         app.tabBars.buttons.element(boundBy: 2).tap()
         XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
-        try captureScreen(app: app, appName: appName, screen: "settings")
+        try captureScreen(app: app, appName: appName, screen: "settings" + suffix)
     }
 }

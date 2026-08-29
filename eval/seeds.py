@@ -51,6 +51,7 @@ DETAIL = "Ledgerly/ExpenseDetailView.swift"
 ADD = "Ledgerly/AddExpenseView.swift"
 STATS = "Ledgerly/StatsView.swift"
 SETTINGS = "Ledgerly/SettingsView.swift"
+COMPONENTS = "Ledgerly/Components.swift"
 
 
 def modifier_check(anchor: str, modifier: str) -> dict[str, Any]:
@@ -338,6 +339,96 @@ SEEDS: list[Seed] = [
         find='                .accessibilityIdentifier("settings.currency")',
         replace='                .foregroundStyle(Color(white: 0.72))\n                .accessibilityIdentifier("settings.currency")',
         check={"type": "report_only"},
+    ),
+    # ---------------------------------------------------------------- Corpus v2
+    # Runtime-only defects. Corpus v1 measured reading comprehension: every
+    # defect was plain in the source, and a one-shot prompt fixed all of them
+    # without running anything. These are the cases where source inspection is
+    # structurally insufficient — the symptom exists only once the app renders,
+    # or it surfaces on a screen whose file does not contain the cause.
+    Seed(
+        id="H01",
+        screen="stats",
+        file=COMPONENTS,
+        violation_class="ancestor_swallow",
+        fixable=True,
+        anchor="card.container",
+        description=(
+            "RUNTIME-ONLY, CROSS-FILE: the shared Card container switches from "
+            "children: .contain to children: .ignore, so everything inside every card "
+            "disappears from the accessibility tree. The symptom appears on Stats and "
+            "Settings; the cause is in Components.swift, which neither screen's source "
+            "contains. Reading either screen shows nothing wrong."
+        ),
+        find='        .accessibilityElement(children: .contain)',
+        replace='        .accessibilityElement(children: .ignore)',
+        check={
+            "type": "modifier_argument_excludes",
+            "anchor": "card.container",
+            "modifier": "accessibilityElement",
+            "forbidden": [".ignore"],
+        },
+    ),
+    Seed(
+        id="H02",
+        screen="stats",
+        file=COMPONENTS,
+        violation_class="hit_region",
+        fixable=True,
+        anchor="card.action",
+        description=(
+            "RUNTIME-ONLY: the share button loses the padding and contentShape that gave "
+            "it a 44pt target. No literal frame in the source states a size — the target "
+            "collapses to the rendered glyph, which is only measurable on a running app."
+        ),
+        find="""            Image(systemName: symbol)
+                .imageScale(.medium)
+                .padding(12)
+                .contentShape(Rectangle())""",
+        replace="""            Image(systemName: symbol)
+                .imageScale(.medium)""",
+        check=modifier_check("card.action", "contentShape"),
+    ),
+    Seed(
+        id="H03",
+        screen="stats",
+        file=STATS,
+        violation_class="dynamic_type_clipping",
+        fixable=True,
+        anchor="stats.total",
+        description=(
+            "RUNTIME-ONLY: the month total is pinned to a single line at a fixed size, so "
+            "it truncates at accessibility text sizes. At the default size it renders "
+            "perfectly; the defect exists only in the accessibility-size capture."
+        ),
+        find="""                            .font(.title3.monospacedDigit())
+                            .lineLimit(1)
+                            .accessibilityIdentifier("stats.total")""",
+        replace="""                            .font(.system(size: 22, weight: .semibold).monospacedDigit())
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .accessibilityIdentifier("stats.total")""",
+        check={"type": "no_modifier", "anchor": "stats.total", "modifier": "fixedSize"},
+    ),
+    Seed(
+        id="H04",
+        screen="settings",
+        file=SETTINGS,
+        violation_class="dynamic_type_clipping",
+        fixable=True,
+        anchor="settings.limit.title",
+        description=(
+            "RUNTIME-ONLY: the budget row clips its label against its value at "
+            "accessibility text sizes, because both are held on one line in a fixed HStack."
+        ),
+        find="""                        Text("Monthly limit")
+                            .lineLimit(1)
+                            .accessibilityIdentifier("settings.limit.title")""",
+        replace="""                        Text("Monthly limit")
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .accessibilityIdentifier("settings.limit.title")""",
+        check={"type": "no_modifier", "anchor": "settings.limit.title", "modifier": "fixedSize"},
     ),
 ]
 

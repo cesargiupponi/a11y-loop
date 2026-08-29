@@ -3,8 +3,8 @@
   "clean_source": "corpus/Ledgerly",
   "seeded_source": "corpus/LedgerlySeeded",
   "totals": {
-    "cases": 20,
-    "mechanical": 18,
+    "cases": 24,
+    "mechanical": 22,
     "report_only": 2,
     "screens": 5
   },
@@ -224,8 +224,8 @@
         "modifier": "accessibilityAddTraits"
       },
       "exists_in_clean": true,
-      "clean_line": 15,
-      "seeded_line": 15
+      "clean_line": 26,
+      "seeded_line": 26
     },
     {
       "id": "S13",
@@ -241,8 +241,8 @@
         "modifier": "accessibilityElement"
       },
       "exists_in_clean": true,
-      "clean_line": 25,
-      "seeded_line": 25
+      "clean_line": 36,
+      "seeded_line": 36
     },
     {
       "id": "S14",
@@ -268,8 +268,8 @@
         ]
       },
       "exists_in_clean": true,
-      "clean_line": 58,
-      "seeded_line": 58
+      "clean_line": 69,
+      "seeded_line": 69
     },
     {
       "id": "S15",
@@ -316,8 +316,8 @@
         "anchor": "settings.privacy"
       },
       "exists_in_clean": true,
-      "clean_line": 25,
-      "seeded_line": 25
+      "clean_line": 38,
+      "seeded_line": 38
     },
     {
       "id": "S18",
@@ -333,8 +333,8 @@
         "modifier": "accessibilityElement"
       },
       "exists_in_clean": true,
-      "clean_line": 22,
-      "seeded_line": 22
+      "clean_line": 35,
+      "seeded_line": 35
     },
     {
       "id": "R02",
@@ -350,6 +350,77 @@
       "exists_in_clean": true,
       "clean_line": 14,
       "seeded_line": 14
+    },
+    {
+      "id": "H01",
+      "screen": "stats",
+      "file": "Ledgerly/Components.swift",
+      "violation_class": "ancestor_swallow",
+      "fixable": true,
+      "anchor": "card.container",
+      "description": "RUNTIME-ONLY, CROSS-FILE: the shared Card container switches from children: .contain to children: .ignore, so everything inside every card disappears from the accessibility tree. The symptom appears on Stats and Settings; the cause is in Components.swift, which neither screen's source contains. Reading either screen shows nothing wrong.",
+      "check": {
+        "type": "modifier_argument_excludes",
+        "anchor": "card.container",
+        "modifier": "accessibilityElement",
+        "forbidden": [
+          ".ignore"
+        ]
+      },
+      "exists_in_clean": true,
+      "clean_line": 20,
+      "seeded_line": 20
+    },
+    {
+      "id": "H02",
+      "screen": "stats",
+      "file": "Ledgerly/Components.swift",
+      "violation_class": "hit_region",
+      "fixable": true,
+      "anchor": "card.action",
+      "description": "RUNTIME-ONLY: the share button loses the padding and contentShape that gave it a 44pt target. No literal frame in the source states a size \u2014 the target collapses to the rendered glyph, which is only measurable on a running app.",
+      "check": {
+        "type": "modifier_present",
+        "anchor": "card.action",
+        "modifier": "contentShape"
+      },
+      "exists_in_clean": true,
+      "clean_line": 36,
+      "seeded_line": 36
+    },
+    {
+      "id": "H03",
+      "screen": "stats",
+      "file": "Ledgerly/StatsView.swift",
+      "violation_class": "dynamic_type_clipping",
+      "fixable": true,
+      "anchor": "stats.total",
+      "description": "RUNTIME-ONLY: the month total is pinned to a single line at a fixed size, so it truncates at accessibility text sizes. At the default size it renders perfectly; the defect exists only in the accessibility-size capture.",
+      "check": {
+        "type": "no_modifier",
+        "anchor": "stats.total",
+        "modifier": "fixedSize"
+      },
+      "exists_in_clean": true,
+      "clean_line": 14,
+      "seeded_line": 14
+    },
+    {
+      "id": "H04",
+      "screen": "settings",
+      "file": "Ledgerly/SettingsView.swift",
+      "violation_class": "dynamic_type_clipping",
+      "fixable": true,
+      "anchor": "settings.limit.title",
+      "description": "RUNTIME-ONLY: the budget row clips its label against its value at accessibility text sizes, because both are held on one line in a fixed HStack.",
+      "check": {
+        "type": "no_modifier",
+        "anchor": "settings.limit.title",
+        "modifier": "fixedSize"
+      },
+      "exists_in_clean": true,
+      "clean_line": 24,
+      "seeded_line": 24
     }
   ]
 }

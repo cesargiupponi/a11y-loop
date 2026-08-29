@@ -8,6 +8,18 @@ struct StatsView: View {
                     .font(.title2.bold())
                     .accessibilityIdentifier("stats.header.categories")
 
+                Card(title: "This month") {
+                    HStack {
+                        Text(SampleData.expenses.reduce(0) { $0 + $1.amount }, format: .currency(code: "USD"))
+                            .font(.system(size: 22, weight: .semibold).monospacedDigit())
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .accessibilityIdentifier("stats.total")
+                        Spacer()
+                        IconButton(symbol: "square.and.arrow.up", label: "Share summary") {}
+                    }
+                }
+
                 CategoryBarChart(totals: SampleData.totalsByCategory)
 
                 Text("Largest expenses")
